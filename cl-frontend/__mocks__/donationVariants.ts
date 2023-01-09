@@ -1,0 +1,52 @@
+/* eslint-disable camelcase */
+export const MOCK_DONATION_VARIANTS_RESPONSE = {
+    id: '13aa7f22-3a20-43f3-b6bd-e312698001c0',
+    title: 'Win Sky Diving Trip',
+    rules: 'Things our lawyers want you to read',
+    status: 'OPEN',
+    cause: 'Make a wish',
+    prize: 'Sky Diving',
+    slug: 'sky-diving',
+    open_date: '2022-04-22T00:00:00Z',
+    close_date: '2022-10-02T00:00:00Z',
+    draw_date: '2022-12-02T00:00:00Z',
+    winner_announce_date: '2023-12-02T00:00:00Z',
+    winner: '',
+    prices: [
+        {
+            payment_link_url: 'https://buy.stripe.com/test_eVa3g0e63bcw0cE00a',
+            price: 1000,
+            entries: 20,
+            currency_code: 'usd',
+            external_id: 'price_1L6JCiD8BCBD5aCdYnlHcN7E',
+        },
+        {
+            payment_link_url: 'https://buy.stripe.com/test_eVa4k4fa7cgA8Ja8wH',
+            price: 2500,
+            entries: 125,
+            currency_code: 'usd',
+            external_id: 'price_1L6JCiD8BCBD5aCd6o5drrR7',
+        },
+        {
+            payment_link_url: 'https://buy.stripe.com/test_7sIdUE1jh1BWf7ydR2',
+            price: 5000,
+            entries: 500,
+            currency_code: 'usd',
+            external_id: 'price_1L6JCiD8BCBD5aCdNLBUH9Ig',
+        },
+        {
+            payment_link_url: 'https://buy.stripe.com/test_28og2M9PN6Wge3u28l',
+            price: 10000,
+            entries: 1200,
+            currency_code: 'usd',
+            external_id: 'price_1L6JCiD8BCBD5aCdfNU5NOL1',
+        },
+        {
+            payment_link_url: 'https://buy.stripe.com/test_4gw8Ak8LJ3K4e3ueV8',
+            price: 1500,
+            entries: 2000,
+            currency_code: 'usd',
+            external_id: 'price_1L6JCjD8BCBD5aCdUWoQTrwE',
+        },
+    ],
+};

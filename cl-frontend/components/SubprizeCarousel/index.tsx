@@ -1,0 +1,1 @@
+export { SubprizeCarousel } from './SubprizeCarousel';

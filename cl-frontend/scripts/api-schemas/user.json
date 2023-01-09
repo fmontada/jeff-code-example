@@ -1,0 +1,1089 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Omaze User Service",
+    "version": "1.0",
+    "summary": "User API",
+    "license": {
+      "url": "https://omaze.com",
+      "name": "Copyright © 2022, Omaze, Inc. All rights reserved."
+    },
+    "description": "Omaze owned User Service",
+    "contact": {
+      "name": "Omaze Engineering"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "local"
+    },
+    {
+      "url": "https://cl-user-api.qa.omazedev.com",
+      "description": "QA"
+    },
+    {
+      "url": "https://cl-user-api.stg.omazedev.com",
+      "description": "Stage"
+    },
+    {
+      "url": "https://cl-user-api.prd.omazedev.com",
+      "description": "Prod"
+    }
+  ],
+  "paths": {
+    "/v1/admin/users": {
+      "post": {
+        "summary": "Create New User (Admin/CX)",
+        "operationId": "post-v1-users-admin",
+        "responses": {
+          "200": {
+            "description": "User Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "UserResponseExample": {
+                    "$ref": "#/components/examples/UserResponseExample"
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "409": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          }
+        },
+        "description": "Create a new user.",
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserWithSource"
+              },
+              "examples": {
+                "PostUserRequestExample": {
+                  "$ref": "#/components/examples/PostUserRequestExample"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ]
+      },
+      "get": {
+        "summary": "Get Users (Admin/CX)",
+        "operationId": "get-v1-users-admin",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "users": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "type": "object"
+                },
+                "examples": {
+                  "UsersResponseExample": {
+                    "$ref": "#/components/examples/UsersResponseExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Email",
+            "description": "Email to look up"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "First-Name",
+            "description": "First name to look up"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Last-Name",
+            "description": "Last name to look up"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Address-Line-1",
+            "description": "Address line 1 to look up"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Address-Line-2",
+            "description": "Address line 2 to look up"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "City",
+            "description": "City to look up"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "State",
+            "description": "State to look up"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Postal-Code",
+            "description": "Postal code to look up"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Country",
+            "description": "Country to look up"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 10
+            },
+            "in": "query",
+            "name": "limit",
+            "description": "per page limit (REQUIRED for pagination, DEFAULT is 10, MAX is 100)"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "offset",
+            "description": "data offset (OPTIONAL for pagination, default is set to 0, please ONLY provide offset or page not both)"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "in": "query",
+            "name": "page",
+            "description": "page number (OPTIONAL for pagination, default is set to 1, please ONLY provide offset or page not both)"
+          }
+        ],
+        "description": "Get User with Email (Email inserted in Headers)",
+        "tags": [
+          "User"
+        ]
+      },
+      "parameters": [],
+      "put": {
+        "summary": "Update User (Admin/CX)",
+        "operationId": "put-v1-users-admin",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "UserResponseExample": {
+                    "$ref": "#/components/examples/UserResponseExample"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          }
+        },
+        "description": "Updates an existing user.",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "PutUserRequestExample": {
+                  "$ref": "#/components/examples/PutUserRequestExample"
+                }
+              }
+            }
+          },
+          "description": ""
+        }
+      }
+    },
+    "/v1/admin/users/{userID}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": "userID",
+          "in": "path",
+          "required": true,
+          "description": "User's Omaze ID"
+        }
+      ],
+      "get": {
+        "summary": "Get User By ID (Admin/CX)",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          }
+        },
+        "operationId": "get-v1-users-by-id-admin",
+        "description": "Get User by ID",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/user": {
+      "get": {
+        "summary": "Get Self User",
+        "operationId": "get-v1-user-self",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SelfUserResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "description": "Get User Self.",
+        "tags": [
+          "User",
+          "Self"
+        ]
+      },
+      "put": {
+        "summary": "Update Self user",
+        "tags": [
+          "User",
+          "Self"
+        ],
+        "operationId": "put-v1-user-self",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SelfUserResponse"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          }
+        },
+        "description": "Endpoint to allow logged in user to update self.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "PutSelfUserRequestExample": {
+                  "$ref": "#/components/examples/PutSelfUserRequestExample"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/healthcheck": {
+      "get": {
+        "summary": "Get Healthcheck",
+        "tags": [
+          "Other"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/HealthcheckResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/OappAPIErrorResponse"
+          }
+        },
+        "operationId": "get-v1-healthcheck",
+        "description": "Checks the status of the running api.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "parameters": []
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "title": "User",
+        "type": "object",
+        "description": "",
+        "examples": [
+          {
+            "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+            "first_name": "Emma",
+            "last_name": "Park",
+            "email": "emma.park@example.com",
+            "phone_number": "310-377-0132",
+            "status": "GUEST",
+            "address": {
+              "address_line_1": "123 Aloha Way",
+              "address_line_2": "Suite 808",
+              "city": "Honolulu",
+              "state": "HI",
+              "postal_code": "96816",
+              "country": "US"
+            },
+            "notes": "Customer is appeased with trident gum."
+          }
+        ],
+        "x-internal": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the given user.",
+            "format": "uuid",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$",
+            "example": "c8d8aa3a-ca3e-11ec-9d64-0242ac120002",
+            "readOnly": true
+          },
+          "first_name": {
+            "type": "string",
+            "minLength": 0,
+            "description": "User's first name",
+            "example": "Emma"
+          },
+          "last_name": {
+            "type": "string",
+            "minLength": 0,
+            "description": "User's last name",
+            "example": "Park"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email",
+            "example": "emma.park@example.com"
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "User's phone number",
+            "example": "310-377-0132"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserStatus"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notes about user (only shown to admin users)",
+            "example": "Customer is appeased with trident gum."
+          }
+        },
+        "required": [
+          "id",
+          "email"
+        ]
+      },
+      "UserStatus": {
+        "type": "string",
+        "title": "UserStatus",
+        "x-stoplight": {
+          "id": "54bn25nuus4fz"
+        },
+        "enum": [
+          "GUEST",
+          "ACTIVE",
+          "INACTIVE"
+        ],
+        "readOnly": true,
+        "description": "GUEST - user has an order in stripe but no account within auth0\nACTIVE - user has an account in auth0\nINACTIVE - user is deactivated, status only shown to admin users"
+      },
+      "UserWithSource": {
+        "title": "UserWithSource",
+        "x-stoplight": {
+          "id": "xqoybcqxskqy6"
+        },
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$",
+            "example": "c8d8aa3a-ca3e-11ec-9d64-0242ac120002",
+            "readOnly": true
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "minLength": 1,
+            "format": "email"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserStatus"
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_name": {
+            "type": "string",
+            "enum": [
+              "AUTH0",
+              "STRIPE"
+            ]
+          }
+        },
+        "required": [
+          "email",
+          "status",
+          "source_id",
+          "source_name"
+        ]
+      },
+      "Address": {
+        "title": "Address",
+        "x-stoplight": {
+          "id": "d7v4r4w1iwxdt"
+        },
+        "type": "object",
+        "description": "Address Object",
+        "examples": [
+          {
+            "address_line_1": "123 Aloha Way",
+            "address_line_2": "Suite 808",
+            "city": "Honolulu",
+            "state": "HI",
+            "postal_code": "96816",
+            "country": "US"
+          }
+        ],
+        "properties": {
+          "address_line_1": {
+            "type": "string",
+            "description": "Street address, P.O. box, company name, etc.",
+            "example": "123 Aloha Way"
+          },
+          "address_line_2": {
+            "type": "string",
+            "description": "Apartment, suite, building, floor, etc.",
+            "example": "Suite 808"
+          },
+          "city": {
+            "type": "string",
+            "description": "city name",
+            "example": "Honolulu"
+          },
+          "state": {
+            "type": "string",
+            "description": "State / region / province",
+            "example": "HI"
+          },
+          "postal_code": {
+            "type": "string",
+            "description": "zip/postal code",
+            "example": "96816"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country name",
+            "example": "US"
+          }
+        },
+        "required": [
+          "address_line_1",
+          "city",
+          "state",
+          "postal_code",
+          "country"
+        ]
+      }
+    },
+    "requestBodies": {},
+    "examples": {
+      "UserResponseExample": {
+        "value": {
+          "id": "c8d8aa3a-ca3e-11ec-9d64-0242ac120002",
+          "first_name": "Emma",
+          "last_name": "Park",
+          "email": "emma.park@example.com",
+          "phone_number": "310-377-0132",
+          "status": "ACTIVE",
+          "address": {
+            "address_line_1": "123 Aloha Way",
+            "address_line_2": "Suite 808",
+            "city": "Honolulu",
+            "state": "HI",
+            "postal_code": "96816",
+            "country": "US"
+          },
+          "notes": "Customer is appeased with trident gum."
+        }
+      },
+      "OappAPIError409Response": {
+        "value": {
+          "errors": [
+            {
+              "status": 409,
+              "detail": "email already in use"
+            }
+          ]
+        }
+      },
+      "OappAPIError400Response": {
+        "value": {
+          "errors": [
+            {
+              "status": 400,
+              "detail": "bad request"
+            }
+          ]
+        }
+      },
+      "OappAPIError404Response": {
+        "value": {
+          "errors": [
+            {
+              "status": 404,
+              "detail": "not found"
+            }
+          ]
+        }
+      },
+      "PutUserRequestExample": {
+        "value": {
+          "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+          "first_name": "Emma",
+          "last_name": "Park",
+          "email": "emma.park@example.com",
+          "phone_number": "310-377-0132",
+          "status": "ACTIVE",
+          "address": {
+            "address_line_1": "123 Aloha Way",
+            "address_line_2": "Suite 808",
+            "city": "Honolulu",
+            "state": "HI",
+            "postal_code": "96816",
+            "country": "US"
+          },
+          "notes": "Customer is appeased with trident gum."
+        }
+      },
+      "PostUserRequestExample": {
+        "value": {
+          "email": "emma.park@example.com",
+          "status": "GUEST",
+          "source_id": "auth0_1234",
+          "source_name": "AUTH0"
+        }
+      },
+      "OappAPIError500Response": {
+        "value": {
+          "errors": [
+            {
+              "status": 500,
+              "detail": "database error occurred"
+            }
+          ]
+        }
+      },
+      "PutSelfUserRequestExample": {
+        "value": {
+          "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+          "first_name": "Grace",
+          "last_name": "Lin",
+          "email": "emma.park@example.com",
+          "phone_number": "808-377-0132",
+          "address": {
+            "address_line_1": "888 Rainbow Drive",
+            "city": "Honolulu",
+            "state": "HI",
+            "postal_code": "96819",
+            "country": "US"
+          }
+        }
+      },
+      "UsersResponseExample": {
+        "value": {
+          "users": [
+            {
+              "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+              "first_name": "Emma",
+              "last_name": "Park",
+              "email": "emma.park@example.com",
+              "phone_number": "310-377-0132",
+              "status": "GUEST",
+              "address": {
+                "address_line_1": "123 Aloha Way",
+                "address_line_2": "Suite 808",
+                "city": "Honolulu",
+                "state": "HI",
+                "postal_code": "96816",
+                "country": "US"
+              },
+              "notes": "Customer is appeased with trident gum."
+            },
+            {
+              "id": "b88d59be-07df-4639-8f19-447cdc3b7154",
+              "first_name": "Bob",
+              "last_name": "Bobby",
+              "email": "bob.bobby@example.com",
+              "phone_number": "808-377-4815",
+              "status": "ACTIVE",
+              "address": {
+                "address_line_1": "123 King Road",
+                "address_line_2": "Apartment 125",
+                "city": "Honolulu",
+                "state": "HI",
+                "postal_code": "96816",
+                "country": "US"
+              },
+              "notes": "Customer is not appeased with trident gum."
+            },
+            {
+              "id": "421d6616-51fa-43d2-8a37-f1ca28e432c9",
+              "first_name": "Bob",
+              "last_name": "Bobby",
+              "email": "bob.bobby@example.com",
+              "phone_number": "213-377-2313",
+              "status": "ACTIVE"
+            },
+            {
+              "id": "472b99c3-682c-42e9-afc1-097b767bb764",
+              "email": "bob.bobby@example.com",
+              "phone_number": "555-377-5555",
+              "status": "INACTIVE"
+            }
+          ]
+        }
+      },
+      "SelfUserResponseExample": {
+        "value": {
+          "id": "c8d8aa3a-ca3e-11ec-9d64-0242ac120002",
+          "first_name": "Emma",
+          "last_name": "Park",
+          "email": "emma.park@example.com",
+          "phone_number": "310-377-0132",
+          "address": {
+            "address_line_1": "123 Aloha Way",
+            "address_line_2": "Suite 808",
+            "city": "Honolulu",
+            "state": "HI",
+            "postal_code": "96816",
+            "country": "US"
+          }
+        }
+      }
+    },
+    "responses": {
+      "OappAPIErrorResponse": {
+        "description": "OApp API Error Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "integer"
+                      },
+                      "detail": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "400": {
+                "$ref": "#/components/examples/OappAPIError400Response"
+              },
+              "404": {
+                "$ref": "#/components/examples/OappAPIError404Response"
+              },
+              "409": {
+                "$ref": "#/components/examples/OappAPIError409Response"
+              },
+              "500": {
+                "$ref": "#/components/examples/OappAPIError500Response"
+              }
+            }
+          }
+        }
+      },
+      "HealthcheckResponse": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "service_name": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "build_date": {
+                  "type": "string"
+                },
+                "dependencies": {
+                  "type": "object",
+                  "properties": {
+                    "application": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "x-examples": {
+                "example-1": {
+                  "service_name": "cl-order-api",
+                  "status": "healthy",
+                  "version": "v1.7.0-rc.3-1660696161",
+                  "build_date": "08/17/22",
+                  "dependencies": {
+                    "application": "OK"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "Healthcheck example": {
+                "value": {
+                  "service_name": "cl-order-api",
+                  "status": "healthy",
+                  "version": "v1.7.0-rc.3-1660696161",
+                  "build_date": "08/17/22",
+                  "dependencies": {
+                    "application": "OK"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "headers": {}
+      },
+      "SelfUserResponse": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "id": "c8d8aa3a-ca3e-11ec-9d64-0242ac120002",
+                  "first_name": "Emma",
+                  "last_name": "Park",
+                  "email": "emma.park@example.com",
+                  "phone_number": "310-377-0132",
+                  "address": {
+                    "address_line_1": "123 Aloha Way",
+                    "address_line_2": "Suite 808",
+                    "city": "Honolulu",
+                    "state": "HI",
+                    "postal_code": "96816",
+                    "country": "US"
+                  }
+                }
+              },
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "c8d8aa3a-ca3e-11ec-9d64-0242ac120002"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "example": "mary@example.com"
+                },
+                "first_name": {
+                  "type": "string",
+                  "example": "Mary"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Christmas"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "example": "808-555-1234"
+                },
+                "address": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              },
+              "required": [
+                "id",
+                "email"
+              ]
+            },
+            "examples": {
+              "SelfUserResponseExample": {
+                "$ref": "#/components/examples/SelfUserResponseExample"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Auth0QA": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "scopes": {
+              "cl-user-api.self:read": "Self Read",
+              "cl-user-api.user:create": "User Create",
+              "cl-user-api.user:read": "User Read",
+              "cl-user-api.user:update": "User Update"
+            },
+            "authorizationUrl": "https://login.dogfood.qa.omazedev.com",
+            "tokenUrl": "https://login.dogfood.qa.omazedev.com/oauth/token"
+          }
+        }
+      },
+      "Auth0STG": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "scopes": {
+              "cl-user-api.self:read": "Self Read",
+              "cl-user-api.user:create": "User Create",
+              "cl-user-api.user:read": "User Read",
+              "cl-user-api.user:update": "User Update"
+            },
+            "authorizationUrl": "https://login.dogfood.stg.omazedev.com",
+            "tokenUrl": "https://login.dogfood.stg.omazedev.com/oauth/token"
+          }
+        }
+      },
+      "Auth0PRD": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "scopes": {
+              "cl-user-api.self:read": "Self Read",
+              "cl-user-api.user:create": "User Create",
+              "cl-user-api.user:read": "User Read",
+              "cl-user-api.user:update": "User Update"
+            },
+            "authorizationUrl": "https://login.dogfood.omaze.com/",
+            "tokenUrl": "https://login.dogfood.omaze.com/oauth/token"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "User"
+    },
+    {
+      "name": "Admin"
+    },
+    {
+      "name": "Self"
+    },
+    {
+      "name": "Other"
+    }
+  ]
+}

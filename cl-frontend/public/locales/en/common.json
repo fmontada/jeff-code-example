@@ -1,0 +1,249 @@
+{
+    "account": {
+        "backToYourExperience": "Back to your experiences",
+        "loginBanner": "Welcome back! It's good to see you again.",
+        "signUpBanner": "Welcome! We're so glad you're here.",
+        "donationHistory": {
+            "backToDonationHistory": "Back to donation history",
+            "title": "Donation History",
+            "totalEntries": "Total Entries",
+            "donationTotal": "Donation Total",
+            "noOrders": "No Orders Found",
+            "order": {
+                "date": "Order Date",
+                "notFound": "No order found",
+                "paymentMethod": "Payment Method",
+                "paymentStatus": "Payment Status",
+                "refunded": "Refunded",
+                "summary": "Order Summary",
+                "title": "Order #{{orderId}}",
+                "subtotal": "Subtotal",
+                "total": "Total",
+                "method": {
+                    "card": "Card {{ cardSummary }}",
+                    "freeEntries": "Free Entries!"
+                },
+                "status": {
+                    "failed": "Failed",
+                    "pending": "Pending",
+                    "succeeded": "Succeeded"
+                }
+            }
+        },
+        "settings": {
+            "notAuthenticated": "Not Authenticated",
+            "errorOccurred": "An error has occurred: {{errorMsg}}",
+            "accountSettings": "Account Settings",
+            "notProvided": "Not provided",
+            "personalInformation": {
+                "personalInfo": "Personal info",
+                "infoNote": "Keep your contact info up to date. We'll only use it if we need to get in touch with you.",
+                "email": "Email Address",
+                "fullName": "Full name"
+            },
+            "toolTipMsg": {
+                "altTextHelpIcon": "Help Tip",
+                "altTextClose": "close"
+            },
+            "email": {
+                "tooltip": "Please reach out to our customer support team at {{-email}} if you wish to update your email address."
+            }
+        },
+        "experience": {
+            "header": "Welcome back, {{firstName}}!"
+        }
+    },
+    "donationVariant": {
+        "donate": "Donate {{price}}",
+        "subprize": "Enter now and you could win {{prize, en-handle-an}}! Ends {{endDate}}.",
+        "enterWithoutContributing": "Enter without contributing"
+    },
+    "footer": {
+        "copyright": "Copyright © {{fullYear}}, Omaze, Inc. All rights reserved."
+    },
+    "header": {
+        "cartIcon": "Cart",
+        "hamburgerIcon": "Menu",
+        "accountMenu": {
+            "logout": "Log Out",
+            "hi": "Hi {{name}}!",
+            "yourExperience": "Your Experience",
+            "donationHistory": "Donation History",
+            "accountSettings": "Account Settings"
+        },
+        "menu": {
+            "login": "Log In",
+            "signUp": "Sign Up",
+            "prizes": "Prizes",
+            "pastDraws": "Past Draws",
+            "myAccount": "My Account"
+        }
+    },
+    "secondaryHeader": {
+        "overview": "Overview",
+        "whatYouWillGet": "What you'll get",
+        "whoYouWillHelp": "Who you'll help",
+        "officialRules": "Official rules",
+        "enterNowBtn": "Enter now"
+    },
+    "sweepstake": {
+        "closesLabel": "Closes:",
+        "closesOnLabel": "Closes on {{-time}}",
+        "closedOnLabel": "Closed on {{-time}}",
+        "heroTitleWinnerAnnounced": "Meet the winner of {{sweepstakeTitle, en-handle-an}} {{sweepstakeTitle}}",
+        "heroTitleWinnerPending": "Thanks to everyone who entered to win {{sweepstakeTitle, en-handle-an}} {{sweepstakeTitle}}",
+        "rulesTitle": "Sweepstakes Rules & Eligibility",
+        "prizeDetails": "Prize Details",
+        "winnerAnnouncedLabel": "Winner announcement around {{- time}}",
+        "winnerPendingLabel": "Winner pending!",
+        "bodyCopyEmphasis": "Winner will be announced on or around",
+        "winnerDetailsTitle": "Congrats!",
+        "announcedLabel": "Announced",
+        "winnerAlt": "Winner",
+        "notFoundPlural": "No sweepstakes found.",
+        "errorFetching": "Unable to fetch sweepstakes.",
+        "seeTheirReaction": "See their reaction to winning!",
+        "winnerFrom": "from {{ winnerLocation }}",
+        "winWin": "It's a win-win",
+        "winWinCaf": "was granted by CAF America to {{-charityDetailsTitle}} thanks to the generosity of the Omaze donor community",
+        "omazeExperienceCan": "This Omaze experience can",
+        "moreToWin": {
+            "title": "More to win-win",
+            "moreEntryOptions": "More Entry Options",
+            "donateTitle": "Donate {{ price }} and get {{ numEntries }} entries to:"
+        }
+    },
+    "thankYou": {
+        "title": "Thanks for your payment",
+        "body": "A payment to Stripe will appear on your statement.",
+        "survey": "Link to <2>dogfooding survey</2>."
+    },
+    "createAccountMessage": {
+        "emailAlt": "Email Icon",
+        "message": "To verify your account, check your email",
+        "footNote": {
+            "partOne": "Didn't receive our email?",
+            "partTwo": "Check your spam folder or reach out to our customer support team at",
+            "partThree": " for assistance."
+        }
+    },
+    "experiences": {
+        "closesLabel": "CLOSES",
+        "yourExperience": "Your experience",
+        "activeContextWithExperiences": "You're in it to win it! Check out key dates and prize details, and easily enter again. Your most recent entries can take up to a couple of minutes to appear.",
+        "closedContextWithNoExperiences": "If you entered an experience, check back here once it closes to see who won and how much was raised!",
+        "closedContextWithExperiences": "These experiences are wrapped up—see the winner status and find out who won below!",
+        "dontMissContext": "Don’t miss out on your opportunity to win something amazing and support a great cause.",
+        "nothingToSee": "Nothing to see here... yet",
+        "activeButton":"Active",
+        "closedButton": "Closed",
+        "yourEntries": "YOUR ENTRIES",
+        "experiencesAlt": "experience",
+        "statuses": {
+            "open": "{{days}} days left!",
+            "open_one": "{{days}} day left!",
+            "seeWhoWon": "See who won!",
+            "winnerPending": "Winner Pending"
+        }
+    },
+    "cartOrder": {
+        "hideOrderSummaryLabel": "Hide Order summary",
+        "showOrderSummaryLabel": "Show order summary",
+        "entries": "{{numEntries}} entries",
+        "quantity": "Qty: {{quantity}}",
+        "cartIconAlt": "cart",
+        "orderImage": "order",
+        "supporting": "Supporting {{-charityName}}"
+    },
+    "checkout": {
+        "pay": "Pay",
+        "title": "Checkout",
+        "emailAddress": "Email Address",
+        "emailAddressInvalid": "Email address is invalid",
+        "submitting": "Submitting order, please do not close this window",
+        "error": "There has been an error submitting this order, please try again",
+        "submitted": "This order has been submitted already.",
+        "continue": "Continue Shopping",
+        "alreadyCompleted": "This order has been already completed or cancelled, please start a new one.",
+        "billingAddress": {
+            "city": "City",
+            "cityRequired": "City is required",
+            "state": "State",
+            "stateRequired": "State is required",
+            "billingAddress": "Billing Address",
+            "billingAddressRequired": "Billing Address is required",
+            "billingAddressDetails": "Billing Address Details (optional)"
+        },
+        "legalDisclaimer": "By placing your order, you agree to our {{-termsOfService}} and {{-privacyPolicy}}.",
+        "termsOfService": "terms of service",
+        "privacyPolicy": "privacy policy",
+        "signUpForEmails": "Want bonus entries, winner info, impact updates and more? Sign up for our emails! It's not required and you can opt out at any time. For more information view our {{-privacyPolicy}}."
+    },
+    "cart": {
+        "emptyCart": "Your cart is empty",
+        "lineItem": {
+            "noteWithSubprizes": "Entries towards {{-prize}} and each Early Bird prize:",
+            "noteWithoutSubprizes": "Entries towards {{-prize}}",
+            "supporting": "Supporting {{-charity}}"
+        },
+        "reduceQuantity": "Reduce quantity",
+        "increseQuantity": "Increase quantity",
+        "remove": "Remove from cart",
+        "shopNow": "Shop Now",
+        "subtotal": "Subtotal",
+        "title": "Cart",
+        "warning": {
+            "title": "Where Do Your Donations Go?",
+            "content": "Omaze fundraises for various US-registered 501(c) (3) public charities (each a \"Charity Client\") who receive 100% of the donations raised from Omaze's experiences. The Charity Client associated with an experience then grants the donations, minus experience fees and costs, to the identified nonprofit grantee. For more info on an Experience's Charity Client and the nonprofit grantee, see the Experience Rules and \"Fundraising Transparency\" section at the bottom of each experience page."
+        },
+        "yourCart": "Your Cart"
+    },
+    "general": {
+        "entries": "{{numEntries}} Entries",
+        "loading": "Loading...",
+        "enterNowButton": "Enter now"
+    },
+    "sweepstakes": {
+        "seoTitle": "Sweepstakes"
+    },
+    "geolocation": {
+        "banner": {
+            "title": "We see you are visiting us from outside Florida, US. Unfortunately, non FL residents cannot contribute to these specific fundraisers. But please know there are plenty of dream experiences you can enter for your chance to win clicking link below.",
+            "link": "Discover Experiences"
+        }
+    },
+    "subprizes": {
+        "closesIn": "CLOSES IN {{- closeDate}}.",
+        "closesOn": "CLOSES ON {{- closeDate}}.",
+        "closedOn": "CLOSED ON {{- closeDate}}.",
+        "title": "Enter today and win even more!",
+        "subtitle": "We're giving away spectacular Early Bird Prizes to those of you who enter early. The sooner you enter, the more prizes you have the chance to win.",
+        "earlyBirdsWinners": "Early Bird Winners",
+        "winnerOf": "{{- winnerName}} from {{ winnerLocation}} won the {{- subprizeTitle }}",
+        "winnerPending": "Winner pending for {{ subprizeTitle }}"
+    },
+    "error": {
+        "404": {
+            "seoTitle": "404 - Not Found",
+            "title": "404",
+            "subtitle": "Oops! This is awkward...",
+            "explanation": "It looks like this page either doesn’t exist or is no longer active. Let’s find a better place for you to go.",
+            "backToHome": "Back to home"
+        },
+        "500": {
+            "seoTitle": "500 - Server Error",
+            "title": "500",
+            "subtitle": "Oops! This is awkward...",
+            "explanation": "It looks like there was an error from our side. Let’s find a better place for you to go.",
+            "backToHome": "Back to home"
+        },
+        "maintenance": {
+            "title": "Maintenance Mode",
+            "explanation": "We're having some technical difficulties, but we'll be back soon!"
+        }
+    },
+    "carousel": {
+        "prevArrowAlt": "left arrow white",
+        "nextArrowAlt": "right arrow white"
+    }
+}

@@ -1,0 +1,11 @@
+next/
+node_modules/
+jest.config.js
+jest.setup.ts
+react-app-env.d.ts
+components/Embla/*
+components/plasmic/*
+components/Strapi/*
+pages/index.tsx
+pages/sweepstakes/\[slug\].tsx
+api-generated

@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.plasmic_page_wrapper {
+    height: inherit;
+    min-height: auto !important;
+}
+
+/* Replacing tailwindbase here */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.no_tailwind_base ul {
+    display: flex;
+    flex-direction: column;
+    list-style-type: disc;
+    padding-inline-start: 32px;
+}
+
+/* Fix sweepstake details bullet points */
+.collapsed-container > div > button > div > img {
+    @apply w-1;
+}
+
+.collapsed-container > div > button > div {
+    @apply pt-0;
+}
+
+.carousel-card-background {
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 57.45%,
+        rgba(0, 0, 0, 0.7) 99.75%
+    );
+}
+
+.carousel-card-background-closed {
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 57.45%,
+        #000000 99.75%
+    );
+}
+
+/* Class to overwrite the OzButton one without changing that library */
+.more-to-win-pricing-btn {
+    font-size: 16px;
+}

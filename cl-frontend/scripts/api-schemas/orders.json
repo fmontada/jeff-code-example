@@ -1,0 +1,1930 @@
+{
+  "openapi": "3.0.3",
+  "x-stoplight": {
+    "id": "1vfvbvdw50bq4"
+  },
+  "info": {
+    "title": "cl-orders-api",
+    "version": "1.5.0",
+    "summary": "Orders API",
+    "description": "Orders API allows creation of new orders and retrieving orders.",
+    "contact": {
+      "name": "Omaze API Support",
+      "url": "https://support.omaze.com/hc",
+      "email": "weloveyou@omaze.com"
+    },
+    "termsOfService": "https://omaze.com",
+    "license": {
+      "name": "Copyright © 2022, Omaze, Inc. All rights reserved.",
+      "url": "https://omaze.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Local"
+    },
+    {
+      "url": "http://cl-order-api:8080",
+      "description": "Docker"
+    },
+    {
+      "description": "QA",
+      "url": "https://cl-order-api.qa.omazedev.com"
+    },
+    {
+      "url": "https://cl-order-api.stg.omazedev.com",
+      "description": "Stage"
+    },
+    {
+      "url": "https://cl-order-api.prd.omazedev.com",
+      "description": "Prod"
+    }
+  ],
+  "paths": {
+    "/v1/orders": {
+      "get": {
+        "summary": "Get Orders by User ID (Self)",
+        "operationId": "get-v1-orders-self",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Get All Orders": {
+                    "$ref": "#/components/examples/AllOrdersExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/HealthcheckResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "description": "Gets orders based on user id in auth token",
+        "tags": [
+          "Orders"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10,
+              "format": "int32"
+            },
+            "in": "query",
+            "name": "limit",
+            "description": "Max number of orders returned. Required for pagination). Defaults to 10, max is 100."
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "in": "query",
+            "name": "offset",
+            "description": "Zero-based index offset of orders to return. Optional for pagination. Defaults to 0."
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/v1/orders/{orderId}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "description": "Order ID from object to be retrieved."
+        }
+      ],
+      "get": {
+        "summary": "Get Order By ID (Self)",
+        "tags": [
+          "Orders"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                },
+                "examples": {
+                  "Get Order": {
+                    "$ref": "#/components/examples/OrderExample"
+                  },
+                  "CX Order": {
+                    "$ref": "#/components/examples/CXOrderExample"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "get-v1-orders-by-id-self",
+        "description": "Get the order with the provided order ID of the user ID extracted from the auth token header, ",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/admin/orders": {
+      "get": {
+        "summary": "Get Orders (Admin/CX)",
+        "tags": [
+          "Orders"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "description": "Array of Orders matching the filter. May be empty.",
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
+                      }
+                    }
+                  },
+                  "required": [
+                    "orders"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "get-v1-orders-admin",
+        "description": "Gets orders by the filter(s) provided in the header and query params. If no filters exist, then all orders are returned. A default max orders and pagination number is used.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "format": "int32",
+              "minimum": 1,
+              "example": 3,
+              "maximum": 100
+            },
+            "in": "query",
+            "name": "limit",
+            "description": "Max number of orders to return. Defaults to 10. Max is 100."
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 5,
+              "minimum": 0
+            },
+            "in": "query",
+            "name": "offset",
+            "description": "Zero-based index offset of orders to return. Defaults to 0."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "ea99ccf5-b968-41d3-8bff-a925a81e5488"
+            },
+            "in": "query",
+            "name": "user_id",
+            "description": "ID of customer whose orders are requested"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "in": "query",
+            "name": "page",
+            "description": "page number (OPTIONAL for pagination, default is set to 1)"
+          }
+        ]
+      },
+      "parameters": [],
+      "post": {
+        "summary": "Create New Order (Admin/CX)",
+        "responses": {
+          "200": {
+            "description": "OK: New order created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                },
+                "examples": {
+                  "CX Order Created": {
+                    "$ref": "#/components/examples/CXOrderExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "post-v1-orders-admin",
+        "description": "Creates a new order based on the fields found in the Order model. There are a three scenarios where some fields are populated differently. \n\n***Paid Order:***\nWhen an order gets created from a payment provider and a card is used, the order will contain a `payment_id`. \n\n***Free Order:***\nWhen an order does not involve a monetary transaction, neither `payment_id` and `payment_method.card` will be present. Additionally the `payment_method.type` shall not be `card`.\n\n***Free Entries:***\nRegardless of an order being free or paid, it can contain free entries lineItems. If this is the case, the lineItem in question will not have the field for `external_id`\n\nFor information about how CX should generate orders awarding free entries, please refer to the `Create New CX Order` example. The differences in this type of order go as follows:\n\n* The request should not contain the field `order.payment_id`.\n* The request's lineItems should not contain the `order.line_item.external_id`.\n* The `order.payment_method.type` value should be `cx`.\n* The `order.payment_method.card` object should not be present.\n* The `order.payment_status` should be `succeeded`.\n* The line items in the order should have the status value `complete`.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              },
+              "examples": {
+                "Create New CX Order": {
+                  "$ref": "#/components/examples/OrderCXReqExample"
+                },
+                "Create New Order": {
+                  "$ref": "#/components/examples/OrderReqExample"
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "x-internal": false,
+        "tags": [
+          "Orders"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/admin/orders/{orderId}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "description": "Order ID from object to be retrieved."
+        }
+      ],
+      "get": {
+        "summary": "Get Order by ID (Admin/CX)",
+        "tags": [
+          "Orders"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                },
+                "examples": {
+                  "Get Order": {
+                    "$ref": "#/components/examples/OrderExample"
+                  },
+                  "CX Order": {
+                    "$ref": "#/components/examples/CXOrderExample"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "get-v1-orders-by-order-id-admin",
+        "description": "Get the order with the provided order ID",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/pools": {
+      "post": {
+        "summary": "Create Pool",
+        "operationId": "post-v1-pools",
+        "description": "Generates a new Pool, returns a link for a CSV file",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pool"
+                },
+                "examples": {
+                  "New Pool Response": {
+                    "$ref": "#/components/examples/PoolResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "tags": [
+          "Pools"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/POSTPool"
+        }
+      }
+    },
+    "/v1/cart": {
+      "post": {
+        "summary": "Create New Cart",
+        "operationId": "post-v1-cart",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "description": "Creates a new cart.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/POSTCart"
+        },
+        "tags": [
+          "Cart"
+        ]
+      }
+    },
+    "/v1/cart/{cartId}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "cartId",
+          "in": "path",
+          "required": true,
+          "description": "Order ID from object to be retrieved."
+        }
+      ],
+      "get": {
+        "summary": "Get Cart By ID",
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "get-v1-cart-by-id",
+        "description": "Get Cart from Cart ID"
+      },
+      "put": {
+        "summary": "",
+        "tags": [
+          "Cart"
+        ],
+        "operationId": "put-v1-cart-by-id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "description": "Update Cart by Cart ID",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/POSTCart"
+        }
+      }
+    },
+    "/v1/admin/experiences": {
+      "get": {
+        "summary": "Get Experiences (Admin/CX)",
+        "operationId": "get-v1-experiences-admin",
+        "description": "Gets list of sweepstakes and total entries per sweepstake, based on user id in query parameters",
+        "tags": [
+          "Experiences",
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "experiences": {
+                      "type": "array",
+                      "minItems": 0,
+                      "description": "List of sweepstakes and total entries per sweepstake entered into by the user, grouped by sweepstake.",
+                      "items": {
+                        "$ref": "#/components/schemas/Experience"
+                      },
+                      "readOnly": true
+                    }
+                  },
+                  "required": [
+                    "experiences"
+                  ]
+                },
+                "examples": {
+                  "Get Experiences": {
+                    "$ref": "#/components/examples/ExperiencesResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+            },
+            "in": "query",
+            "name": "user_id",
+            "description": "User's id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 10
+            },
+            "in": "query",
+            "name": "limit",
+            "description": "per page limit (REQUIRED for pagination, DEFAULT is 10, MAX is 100)"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "offset",
+            "description": "data offset (OPTIONAL for pagination, default is set to 0)"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "in": "query",
+            "name": "page",
+            "description": "page number (OPTIONAL for pagination, default is set to 1)"
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/v1/experiences": {
+      "get": {
+        "summary": "Get Experiences (Self)",
+        "operationId": "get-v1-experiences-self",
+        "description": "Gets list of sweepstakes and total entries per sweepstake, based on user id in auth token.",
+        "tags": [
+          "Experiences",
+          "Self"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "experiences": {
+                      "type": "array",
+                      "minItems": 0,
+                      "description": "List of sweepstakes and total entries per sweepstake entered into by the user, grouped by sweepstake.",
+                      "items": {
+                        "$ref": "#/components/schemas/Experience"
+                      },
+                      "readOnly": true
+                    }
+                  },
+                  "required": [
+                    "experiences"
+                  ]
+                },
+                "examples": {
+                  "Get Experiences": {
+                    "$ref": "#/components/examples/ExperiencesResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "maximum": 100
+            },
+            "in": "query",
+            "name": "limit",
+            "description": "per page limit (REQUIRED for pagination, DEFAULT is 10, MAX is 100)"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "offset",
+            "description": "data offset (OPTIONAL for pagination, default is set to 0)"
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/healthcheck": {
+      "get": {
+        "summary": "Get Healthcheck",
+        "tags": [
+          "Other"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/HealthcheckResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "get-healthcheck",
+        "description": "Checks the status of the running api.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/v1/line-items/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$",
+            "example": "87920ae2-45a1-11ed-b878-0242ac120002",
+            "format": "uuid"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "lineItem ID"
+        }
+      ],
+      "put": {
+        "summary": "",
+        "operationId": "put-line-items",
+        "tags": [
+          "LineItems"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LineItem"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "description": "This endpoint allows a CX user to update the lineItem's status in case of a refund.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LineItem"
+              }
+            }
+          },
+          "description": "Request body for updating a line item."
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Order": {
+        "title": "Order",
+        "type": "object",
+        "description": "Order details includes associated payment info, customer info, and line item(s), e.g., sweepstakes ID, product ID, and number of entries. ",
+        "examples": [
+          {
+            "id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+            "external_id": "order_111111abcdef09876",
+            "created_at": "2019-08-24T14:15:22Z",
+            "order_date": "2019-08-24T14:10:33Z",
+            "order_type": "paid",
+            "customer_id": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+            "payment_id": "pi_3KqLnUIUEZG1MhZm1WOU1R1K",
+            "amount": 100,
+            "currency": "USD",
+            "line_items": [
+              {
+                "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+                "created_at": "2019-08-24T14:15:22Z",
+                "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+                "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                "product_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                "external_id": "pr_123456789",
+                "num_entries": 0,
+                "status": "complete",
+                "amount": 0,
+                "quantity": 0
+              }
+            ],
+            "payment_status": "succeeded",
+            "payment_method": {
+              "type": "card",
+              "card": {
+                "brand": "amex",
+                "last4": "4242"
+              }
+            }
+          },
+          {
+            "id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+            "external_id": "order_111111abcdef09876",
+            "created_at": "2019-08-24T14:15:22Z",
+            "order_date": "2019-08-24T14:10:33Z",
+            "order_type": "cx",
+            "customer_id": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+            "amount": 0,
+            "currency": "USD",
+            "line_items": [
+              {
+                "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+                "created_at": "2019-08-24T14:15:22Z",
+                "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+                "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                "product_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                "num_entries": 0,
+                "status": "complete",
+                "amount": 0,
+                "quantity": 0
+              }
+            ],
+            "payment_status": "succeeded",
+            "payment_method": {
+              "type": "other"
+            }
+          }
+        ],
+        "x-tags": [
+          "orders"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+            "description": "order uuid auto-generated by data store upon creation",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$",
+            "readOnly": true
+          },
+          "external_id": {
+            "type": "string",
+            "description": "ID for the equivalent Stripe order.",
+            "example": "order_111111abcdef09876"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO8601 UTC timestamp auto-generated on INSERT",
+            "example": "2019-08-24T14:15:22Z",
+            "readOnly": true
+          },
+          "order_date": {
+            "type": "string",
+            "description": "The ISO8601 UTC timestamp of when the order was placed by the customer.",
+            "format": "date-time",
+            "example": "2019-08-24T14:10:33Z"
+          },
+          "order_type": {
+            "type": "string",
+            "description": "Describes the origin of the Order. If it comes from a paid transaction, the type would be `paid` and if it is an order coming from CX awarding entries would be `cx`.\n\nThis field is optional. If it is not included, it will be assigned as `paid`.",
+            "enum": [
+              "paid",
+              "cx"
+            ]
+          },
+          "customer_id": {
+            "type": "string",
+            "description": "stripe id of the customer",
+            "minLength": 1,
+            "format": "uuid",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$",
+            "example": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4"
+          },
+          "payment_id": {
+            "type": "string",
+            "example": "pi_3KqLnUIUEZG1MhZm1WOU1R1K",
+            "description": "The Stripe payment intent id",
+            "minLength": 1
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "total amount for this order, including tax. It is in the smallest denomination for the given currency. Eg, for USD, this amount will be in cents.",
+            "example": 100
+          },
+          "currency": {
+            "type": "string",
+            "example": "USD",
+            "description": "ISO code of the amount currency",
+            "enum": [
+              "USD",
+              "EUR"
+            ],
+            "pattern": "^[A-Z]{3}$",
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "line_items": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "description": "List of LineItems found in the order.",
+            "items": {
+              "$ref": "#/components/schemas/LineItem"
+            }
+          },
+          "payment_status": {
+            "$ref": "#/components/schemas/PaymentStatus"
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          }
+        },
+        "required": [
+          "order_date",
+          "order_type",
+          "customer_id",
+          "amount",
+          "currency",
+          "payment_status",
+          "payment_method"
+        ]
+      },
+      "Status": {
+        "type": "string",
+        "title": "Status",
+        "description": "Describes the current status of the Order or Cart. The `open` status is for exclusive for the Cart and should not be used for when creating an Order.",
+        "enum": [
+          "incomplete",
+          "pending",
+          "processing",
+          "on_hold",
+          "canceled",
+          "refunded",
+          "paid",
+          "failed",
+          "complete",
+          "replaced",
+          "open"
+        ],
+        "example": "paid",
+        "examples": [
+          "paid"
+        ]
+      },
+      "LineItem": {
+        "title": "LineItem",
+        "type": "object",
+        "examples": [
+          {
+            "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+            "created_at": "2019-08-24T14:15:22Z",
+            "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+            "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+            "product_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+            "external_id": "pr_123456789",
+            "num_entries": 0,
+            "status": "complete",
+            "amount": 0,
+            "quantity": 0
+          }
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+            "description": "line item uuid auto-generated by data store upon creation",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$",
+            "readOnly": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO8601 UTC timestamp auto-generated on INSERT",
+            "readOnly": true
+          },
+          "order_id": {
+            "type": "string",
+            "example": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+            "description": "uuid of the order containing this line item",
+            "minLength": 1,
+            "format": "uuid",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+          },
+          "sweepstakes_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "764c8337-264e-433f-83bd-d6755a2787b2",
+            "description": "uuid of sweepstakes that the purchased product is associated with",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+          },
+          "external_id": {
+            "type": "string",
+            "example": "764c8337-264e-433f-83bd-d6755a2787b2",
+            "description": "uuid of product entered into"
+          },
+          "num_entries": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "number of entries into sweepstakes"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Amount paid for this line item. total amount for this order, including tax. It is in the smallest denomination for the given currency. Eg, for USD, this amount will be in cents."
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of items of this type."
+          }
+        },
+        "required": [
+          "sweepstakes_id",
+          "num_entries",
+          "status",
+          "amount",
+          "quantity"
+        ]
+      },
+      "PaymentMethod": {
+        "title": "Payment Method",
+        "x-stoplight": {
+          "id": "rrl6egqxr78hd"
+        },
+        "type": "object",
+        "examples": [
+          {
+            "type": "card",
+            "card": {
+              "brand": "amex",
+              "last4": "4242"
+            }
+          }
+        ],
+        "description": "",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "card",
+              "other"
+            ],
+            "example": "card"
+          },
+          "card": {
+            "type": "object",
+            "properties": {
+              "brand": {
+                "type": "string",
+                "description": "Card Brand",
+                "enum": [
+                  "amex",
+                  "cartes_bancaires",
+                  "diners_club",
+                  "discover",
+                  "unionpay",
+                  "jcb",
+                  "mastercard",
+                  "visa",
+                  "unknown",
+                  "none"
+                ],
+                "example": "amex"
+              },
+              "last4": {
+                "type": "string",
+                "maxLength": 4,
+                "pattern": "^\\d{4}$",
+                "example": "4242",
+                "description": "Card's last 4 digits",
+                "minLength": 4
+              }
+            },
+            "required": [
+              "brand",
+              "last4"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "PaymentStatus": {
+        "type": "string",
+        "title": "PaymentStatus",
+        "x-stoplight": {
+          "id": "z8gcevcz0j662"
+        },
+        "enum": [
+          "pending",
+          "failed",
+          "succeeded"
+        ],
+        "example": "succeeded",
+        "minLength": 0,
+        "description": "The status of this payment"
+      },
+      "Cart": {
+        "title": "Cart",
+        "x-stoplight": {
+          "id": "fzvy93u0xk49a"
+        },
+        "type": "object",
+        "examples": [
+          {
+            "orderId": "string",
+            "date": "2019-08-24T14:15:22Z",
+            "lineItems": [
+              {
+                "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+                "created_at": "2019-08-24T14:15:22Z",
+                "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+                "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                "product_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                "num_entries": 0,
+                "status": "paid",
+                "amount": 0,
+                "quantity": 0
+              },
+              {
+                "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+                "created_at": "2019-08-24T14:15:22Z",
+                "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+                "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                "product_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                "num_entries": 0,
+                "status": "paid",
+                "amount": 0,
+                "quantity": 0
+              }
+            ],
+            "totalAmount": 0,
+            "status": "open"
+          }
+        ],
+        "description": "Model containing the items to be processed.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Stripe order id acting as a cart id",
+            "example": "order_1LT7AwI3CiQVkzQEIBJhMuXi"
+          },
+          "line_items": {
+            "type": "array",
+            "description": "LineItems included in the cart.",
+            "items": {
+              "$ref": "#/components/schemas/LineItem"
+            }
+          },
+          "total_amount": {
+            "type": "number",
+            "format": "double",
+            "description": "Total order amount."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "submitted",
+              "processing",
+              "complete",
+              "cancelled"
+            ]
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "client_secret": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "line_items",
+          "total_amount",
+          "client_secret"
+        ]
+      },
+      "CartItem": {
+        "title": "CartItem",
+        "x-stoplight": {
+          "id": "3gjfkmisptg2y"
+        },
+        "type": "object",
+        "description": "Model used to represent products in the cart.",
+        "examples": [
+          {
+            "price": "pr_123456",
+            "quantity": 1
+          }
+        ],
+        "properties": {
+          "external_id": {
+            "type": "string",
+            "description": "Price external id from Sweeps price object",
+            "example": "price_laj2kq1m"
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "Number or items of this type.",
+            "format": "int32",
+            "minimum": 1,
+            "default": 1
+          }
+        },
+        "required": [
+          "external_id",
+          "quantity"
+        ]
+      },
+      "Experience": {
+        "title": "Experience",
+        "x-stoplight": {
+          "id": "r22d3dunxpc1r"
+        },
+        "type": "object",
+        "description": "Model used to represent active/closed experiences in a user's account.",
+        "examples": [
+          {
+            "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+            "total_entries": 100,
+            "entries": [
+              {
+                "num_entries": 100,
+                "order_date": "2019-08-24T14:15:22Z"
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "sweepstakes_id": {
+            "type": "string",
+            "example": "764c8337-264e-433f-83bd-d6755a2787b2",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$",
+            "format": "uuid",
+            "description": "Sweepstake UUID that a user entered into",
+            "readOnly": true
+          },
+          "total_entries": {
+            "type": "integer",
+            "minimum": 0,
+            "example": 100,
+            "description": "Number of entries for the given sweepstake, summed across all orders completed by the user.",
+            "format": "int32",
+            "readOnly": true
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExperienceEntry"
+            }
+          }
+        },
+        "required": [
+          "sweepstakes_id",
+          "total_entries",
+          "entries"
+        ]
+      },
+      "ExperienceEntry": {
+        "title": "ExperienceEntries",
+        "x-stoplight": {
+          "id": "p2gh6i0lj7epw"
+        },
+        "type": "object",
+        "properties": {
+          "num_entries": {
+            "type": "integer",
+            "format": "int32",
+            "example": 100,
+            "minimum": 0,
+            "readOnly": true
+          },
+          "order_date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-08-24T14:15:22Z",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "num_entries",
+          "order_date"
+        ]
+      },
+      "Pool": {
+        "title": "Pool",
+        "x-stoplight": {
+          "id": "x5122ywba219g"
+        },
+        "type": "object",
+        "examples": [
+          {
+            "id": "181c2682-32d9-11ed-a261-0242ac120002",
+            "url": "www.pool.com/file.csv",
+            "num_entries": 1500,
+            "checksum": "b1a51d1ed5d3fd6de5ebcacdb865999cac34732f1a191c9799780ae8f712058"
+          }
+        ],
+        "description": "Model used to represent pool response.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "181c2682-32d9-11ed-a261-0242ac120002",
+            "format": "uuid",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+          },
+          "url": {
+            "type": "string"
+          },
+          "num_entries": {
+            "type": "integer",
+            "minimum": 0,
+            "format": "int64"
+          },
+          "checksum": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "num_entries",
+          "checksum"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Auth0QA": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "scopes": {
+              "cl-order-api.orders:create": "Order Create",
+              "cl-order-api.pools:create": "Pool Create",
+              "cl-order-api.self:read": "Read Self Orders"
+            },
+            "authorizationUrl": "https://login.dogfood.qa.omazedev.com",
+            "tokenUrl": "https://login.dogfood.qa.omazedev.com/oauth/token"
+          }
+        }
+      },
+      "Auth0STG": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "scopes": {
+              "cl-order-api.orders:create": "Order Create",
+              "cl-order-api.pools:create": "Pool Create",
+              "cl-order-api.self:read": "Read Self Orders"
+            },
+            "authorizationUrl": "https://login.dogfood.stg.omazedev.com",
+            "tokenUrl": "https://login.dogfood.stg.omazedev.com/oauth/token"
+          }
+        }
+      },
+      "Auth0PRD": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "scopes": {
+              "cl-order-api.orders:create": "Order Create",
+              "cl-order-api.pools:create": "Pool Create",
+              "cl-order-api.self:read": "Read Self Orders"
+            },
+            "authorizationUrl": "https://login.dogfood.omaze.com/",
+            "tokenUrl": "https://login.dogfood.omaze.com/oauth/token"
+          }
+        }
+      }
+    },
+    "responses": {
+      "ErrorResponse": {
+        "description": "Example Error Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Status": {
+                  "type": "integer"
+                },
+                "Detail": {
+                  "type": "string"
+                }
+              }
+            },
+            "examples": {
+              "Error Response Example": {
+                "value": {
+                  "Status": 400,
+                  "Detail": "some error text"
+                }
+              }
+            }
+          }
+        }
+      },
+      "HealthcheckResponse": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "service_name": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "build_date": {
+                  "type": "string"
+                },
+                "dependencies": {
+                  "type": "object",
+                  "properties": {
+                    "application": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "x-examples": {
+                "example-1": {
+                  "service_name": "cl-order-api",
+                  "status": "healthy",
+                  "version": "v1.7.0-rc.3-1660696161",
+                  "build_date": "08/17/22",
+                  "dependencies": {
+                    "application": "OK"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "Healthcheck example": {
+                "value": {
+                  "service_name": "cl-order-api",
+                  "status": "healthy",
+                  "version": "v1.7.0-rc.3-1660696161",
+                  "build_date": "08/17/22",
+                  "dependencies": {
+                    "application": "OK"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "headers": {}
+      }
+    },
+    "examples": {
+      "OrderExample": {
+        "value": {
+          "id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+          "external_id": "order_111111abcdef09876",
+          "created_at": "2019-08-24T14:15:22Z",
+          "order_date": "2019-08-24T14:10:33Z",
+          "order_type": "paid",
+          "customer_id": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+          "payment_id": "pi_3KqLnUIUEZG1MhZm1WOU1R1K",
+          "amount": 2500,
+          "currency": "USD",
+          "line_items": [
+            {
+              "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+              "created_at": "2019-08-24T14:15:22Z",
+              "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+              "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+              "external_id": "price_1234567890",
+              "num_entries": 150,
+              "quantity": 1,
+              "status": "complete",
+              "amount": 2500
+            }
+          ],
+          "payment_status": "succeeded",
+          "payment_method": {
+            "type": "card",
+            "card": {
+              "brand": "amex",
+              "last4": "4242"
+            }
+          }
+        }
+      },
+      "AllOrdersExample": {
+        "value": {
+          "orders": [
+            {
+              "id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+              "external_id": "order_111111abcdef09876",
+              "order_type": "paid",
+              "created_at": "2019-08-24T14:15:22Z",
+              "order_date": "2019-08-24T14:10:33Z",
+              "customer_id": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+              "payment_id": "pi_3KqLnUIUEZG1MhZm1WOU1R1K",
+              "amount": 0,
+              "currency": "USD",
+              "line_items": [
+                {
+                  "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+                  "created_at": "2019-08-24T14:15:22Z",
+                  "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+                  "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                  "external_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                  "num_entries": 0,
+                  "quantity": 1,
+                  "amount": 25,
+                  "status": "paid"
+                }
+              ],
+              "payment_status": "succeeded",
+              "payment_method": {
+                "type": "card",
+                "card": {
+                  "brand": "amex",
+                  "last4": "4242"
+                }
+              }
+            },
+            {
+              "id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+              "order_type": "paid",
+              "external_id": "order_222222abcdef09876",
+              "created_at": "2019-08-30T14:15:22Z",
+              "order_date": "2019-08-30T14:10:33Z",
+              "customer_id": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+              "payment_id": "pi_3KqLnUIUEZG1MhZm1WOU1R1K",
+              "amount": 0,
+              "currency": "USD",
+              "line_items": [
+                {
+                  "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+                  "created_at": "2019-08-30T14:15:22Z",
+                  "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+                  "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                  "external_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                  "num_entries": 0,
+                  "quantity": 1,
+                  "amount": 100,
+                  "status": "paid"
+                }
+              ],
+              "payment_status": "succeeded",
+              "payment_method": {
+                "type": "card",
+                "card": {
+                  "brand": "amex",
+                  "last4": "4242"
+                }
+              }
+            },
+            {
+              "id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+              "external_id": "order_222222abcdef09876",
+              "order_type": "paid",
+              "created_at": "2019-09-01T14:15:22Z",
+              "order_date": "2019-09-01T14:10:33Z",
+              "customer_id": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+              "payment_id": "pi_3KqLnUIUEZG1MhZm1WOU1R1K",
+              "amount": 0,
+              "currency": "USD",
+              "line_items": [
+                {
+                  "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+                  "created_at": "2019-09-01T14:15:22Z",
+                  "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+                  "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                  "external_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+                  "num_entries": 0,
+                  "quantity": 1,
+                  "amount": 50,
+                  "status": "paid"
+                }
+              ],
+              "payment_status": "succeeded",
+              "payment_method": {
+                "type": "card",
+                "card": {
+                  "brand": "amex",
+                  "last4": "4242"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "OrderReqExample": {
+        "value": {
+          "order_date": "2019-08-24T14:10:33Z",
+          "external_id": "order_111111abcdef09876",
+          "order_type": "paid",
+          "customer_id": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+          "payment_id": "pi_3KqLnUIUEZG1MhZm1WOU1R1K",
+          "amount": 2500,
+          "currency": "USD",
+          "line_items": [
+            {
+              "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+              "external_id": "price_1234567890",
+              "num_entries": 150,
+              "quantity": 1,
+              "status": "paid",
+              "amount": 2500
+            }
+          ],
+          "payment_status": "succeeded",
+          "payment_method": {
+            "type": "card",
+            "card": {
+              "brand": "amex",
+              "last4": "4242"
+            }
+          }
+        }
+      },
+      "PoolResponse": {
+        "value": {
+          "id": "b71a3d5a-dd43-11ec-9d64-0242ac120002",
+          "url": "http://s3.amazonaws.com/[bucket_name]/[filename]",
+          "num_entries": 1500,
+          "checksum": "b1a51d1ed5d3fd6de5ebcacdb865999cac34732f1a191c9799780ae8f712058"
+        }
+      },
+      "ExperiencesResponse": {
+        "value": {
+          "experiences": [
+            {
+              "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+              "total_entries": 100,
+              "entries": [
+                {
+                  "num_entries": 100,
+                  "order_date": "2019-08-24T14:15:22Z"
+                }
+              ]
+            },
+            {
+              "sweepstakes_id": "d148dc1a-189d-4ef4-8246-93acb2423489",
+              "total_entries": 5000,
+              "entries": [
+                {
+                  "num_entries": 1000,
+                  "order_date": "2019-08-25T14:15:22Z"
+                },
+                {
+                  "num_entries": 4000,
+                  "order_date": "2019-08-30T14:15:22Z"
+                }
+              ]
+            },
+            {
+              "sweepstakes_id": "55c43680-49fb-4fb4-9780-58eb1d473dc1",
+              "total_entries": 5000,
+              "entries": [
+                {
+                  "num_entries": 2000,
+                  "order_date": "2019-08-26T14:15:22Z"
+                },
+                {
+                  "num_entries": 3000,
+                  "order_date": "2019-08-30T14:15:22Z"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "OrderCXReqExample": {
+        "value": {
+          "order_date": "2019-08-24T14:10:33Z",
+          "order_type": "cx",
+          "customer_id": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+          "amount": 2500,
+          "currency": "USD",
+          "line_items": [
+            {
+              "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+              "num_entries": 500,
+              "quantity": 1,
+              "status": "complete",
+              "amount": 0
+            }
+          ],
+          "payment_status": "succeeded",
+          "payment_method": {
+            "type": "other"
+          }
+        }
+      },
+      "CXOrderExample": {
+        "value": {
+          "id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+          "created_at": "2019-08-24T14:10:33Z",
+          "order_date": "2019-08-24T14:10:33Z",
+          "external_id": "order_111111abcdef09876",
+          "order_type": "paid",
+          "customer_id": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+          "payment_id": "pi_3KqLnUIUEZG1MhZm1WOU1R1K",
+          "amount": 2500,
+          "currency": "USD",
+          "line_items": [
+            {
+              "id": "7704cd9d-9c04-4d75-b62e-18d522b40dc7",
+              "created_at": "2019-08-24T14:15:22Z",
+              "order_id": "12dedc49-92c0-43c2-9dfd-3004a2c648d2",
+              "sweepstakes_id": "764c8337-264e-433f-83bd-d6755a2787b2",
+              "external_id": "price_1234567890",
+              "num_entries": 150,
+              "quantity": 1,
+              "status": "paid",
+              "amount": 2500
+            }
+          ],
+          "payment_status": "succeeded",
+          "payment_method": {
+            "type": "card",
+            "card": {
+              "brand": "amex",
+              "last4": "4242"
+            }
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "POSTCart": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CartItem"
+              }
+            },
+            "examples": {
+              "example-1": {
+                "value": [
+                  {
+                    "external_id": "pr_123456",
+                    "quantity": 1
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "description": "Request body for creating a cart."
+      },
+      "POSTPool": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sweepstake_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$",
+                  "example": "6243d0b2-32d8-11ed-a261-0242ac120002"
+                },
+                "start_date": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2022-04-22T00:00:00.000Z"
+                },
+                "end_date": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2022-04-22T00:00:00.000Z"
+                },
+                "prize_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "6243d0b2-32d8-11ed-a261-0242ac120002",
+                  "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+                }
+              },
+              "required": [
+                "sweepstake_id",
+                "start_date",
+                "end_date"
+              ]
+            },
+            "examples": {
+              "Post Pool Example": {
+                "value": {
+                  "sweepstake_id": "6243d0b2-32d8-11ed-a261-0242ac120002",
+                  "start_date": "2022-04-22T00:00:00.000Z",
+                  "end_date": "2022-04-22T00:00:00.000Z",
+                  "prize_id": "6243d0b2-32d8-11ed-a261-0242ac120002"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Admin"
+    },
+    {
+      "name": "Self"
+    },
+    {
+      "name": "Orders"
+    },
+    {
+      "name": "Pools"
+    },
+    {
+      "name": "Cart"
+    },
+    {
+      "name": "Experiences"
+    },
+    {
+      "name": "LineItems"
+    },
+    {
+      "name": "Other"
+    }
+  ]
+}

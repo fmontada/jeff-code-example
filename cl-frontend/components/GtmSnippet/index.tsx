@@ -1,0 +1,1 @@
+export { GtmSnippet } from './GtmSnippet';

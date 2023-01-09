@@ -1,0 +1,1 @@
+export { CharityDetails } from './CharityDetails';

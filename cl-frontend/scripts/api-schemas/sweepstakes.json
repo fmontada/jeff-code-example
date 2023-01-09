@@ -1,0 +1,947 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Omaze Sweeps Service",
+    "contact": {},
+    "description": "Omaze Domain Services powering Core Loop and our System of Record",
+    "version": "1.0",
+    "summary": "Sweepstakes API",
+    "license": {
+      "name": "Copyright © 2022, Omaze, Inc. All rights reserved.",
+      "url": "https://omaze.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "sweepstakes",
+      "description": "Sweepstakes Domain Services"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "local"
+    },
+    {
+      "url": "https://cl-public-sweeps-api.qa.omazedev.com",
+      "description": "QA"
+    },
+    {
+      "description": "STG",
+      "url": "https://cl-public-sweeps-api.stg.omazedev.com"
+    },
+    {
+      "url": "https://cl-public-sweeps-api.prd.omazedev.com",
+      "description": "PRD"
+    }
+  ],
+  "paths": {
+    "/v1/sweepstakes/{sweepstakesID}": {
+      "get": {
+        "description": "Get Sweepstakes by ID",
+        "tags": [
+          "sweepstakes"
+        ],
+        "operationId": "GetSweepstakesByID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sweepstakes"
+                },
+                "examples": {
+                  "sweeps-example": {
+                    "$ref": "#/components/examples/sweeps-example"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "summary": "Get Sweepstake By ID"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": "sweepstakesID",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/v1/sweepstakes": {
+      "get": {
+        "tags": [
+          "sweepstakes"
+        ],
+        "summary": "Get All Sweepstakes or By Status or By Slug",
+        "operationId": "GetSweepstakes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "sweepstakes": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Sweepstakes"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "type": "object"
+                },
+                "examples": {
+                  "sweeps-multiple-example": {
+                    "$ref": "#/components/examples/sweeps-multiple-example"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "description": "Get all sweepstakes or filter by status",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SweepsStatus"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "in": "query",
+            "name": "slug",
+            "style": "form"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12})(,([0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12})){0,50}$",
+              "example": "123e4567-e89b-12d3-a456-426655440000,c73bcdcc-2669-4bf6-81d3-e4ae73fb11fd,C73BCDCC-2669-4Bf6-81d3-E4AE73FB11FD"
+            },
+            "in": "query",
+            "name": "sweepstakes_ids",
+            "description": "A comma separated list of sweepstake ids (UUIDs) for filtering, maximum 50 ids "
+          }
+        ]
+      },
+      "parameters": []
+    }
+  },
+  "components": {
+    "examples": {
+      "sweeps-multiple-example": {
+        "value": {
+          "sweepstakes": [
+            {
+              "id": "d4d9597e-ca3e-11ec-9d64-0242ac120002",
+              "title": "Live in Hawaii!",
+              "rules": "Things our Lawyers want you to know",
+              "status": "OPEN",
+              "cause": "NSPCC",
+              "slug": "hawaii2020",
+              "draw_date": "2023-01-01T00:00:00Z",
+              "winner_announce_date": "2024-01-01T00:00:00Z",
+              "grand_prize": {
+                "name": "Mansion in Hawaii",
+                "open_date": "2020-01-01T00:00:00Z",
+                "close_date": "2020-10-01T00:00:00Z",
+                "winner": "3184bf53-bbbd-4f15-b8f1-4a9b080d8e11"
+              },
+              "subprizes": [
+                {
+                  "id": "54e3783e-b16d-4af4-90c4-44d55aaefb8e",
+                  "name": "Porsche",
+                  "open_date": "2020-01-01T00:00:00Z",
+                  "close_date": "2020-01-08T00:00:00Z",
+                  "winner": "28fa4128-d76a-4d42-9227-4ce6078c7d3f"
+                },
+                {
+                  "id": "c01eed35-6dd5-4e82-a3c8-380b50b9151d",
+                  "name": "Toyota Sienna Hybrid",
+                  "open_date": "2022-12-25T00:00:00Z",
+                  "close_date": "2022-12-31T00:00:00Z"
+                }
+              ],
+              "prices": [
+                {
+                  "payment_link_url": "https://buy.stripe.com/d4d9597e-payment-url-10",
+                  "price": 1000,
+                  "entries": 20,
+                  "currency_code": "usd",
+                  "external_id": "d4d9597e_stripe_id_10",
+                  "sweepstake_id": "d4d9597e-ca3e-11ec-9d64-0242ac120002"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/d4d9597e-payment-url-25",
+                  "price": 2500,
+                  "entries": 125,
+                  "currency_code": "usd",
+                  "external_id": "d4d9597e_stripe_id_25",
+                  "sweepstake_id": "d4d9597e-ca3e-11ec-9d64-0242ac120002"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/d4d9597e-payment-url-50",
+                  "price": 5000,
+                  "entries": 500,
+                  "currency_code": "usd",
+                  "external_id": "d4d9597e_stripe_id_50",
+                  "sweepstake_id": "d4d9597e-ca3e-11ec-9d64-0242ac120002"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/d4d9597e-payment-url-100",
+                  "price": 10000,
+                  "entries": 1200,
+                  "currency_code": "usd",
+                  "external_id": "d4d9597e_stripe_id_100",
+                  "sweepstake_id": "d4d9597e-ca3e-11ec-9d64-0242ac120002"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/d4d9597e-payment-url-150",
+                  "price": 15000,
+                  "entries": 2000,
+                  "currency_code": "usd",
+                  "external_id": "d4d9597e_stripe_id_150",
+                  "sweepstake_id": "d4d9597e-ca3e-11ec-9d64-0242ac120002"
+                }
+              ]
+            },
+            {
+              "id": "de99f2fc-ca3e-11ec-9d64-0242ac120002",
+              "title": "Vroom vroom",
+              "rules": "Things our Lawyers want you to know",
+              "status": "WINNER_PENDING",
+              "cause": "Gotham Fire Department",
+              "slug": "lamborghini",
+              "draw_date": "2023-01-01T00:00:00Z",
+              "winner_announce_date": "2024-01-01T00:00:00Z",
+              "grand_prize": {
+                "name": "Lambo",
+                "open_date": "2020-01-01T00:00:00Z",
+                "close_date": "2020-10-01T00:00:00Z",
+                "winner": "3184bf53-bbbd-4f15-b8f1-4a9b080d8e11"
+              },
+              "subprizes": [
+                {
+                  "id": "54e3783e-b16d-4af4-90c4-44d55aaefb8e",
+                  "name": "Bike",
+                  "open_date": "2020-01-01T00:00:00Z",
+                  "close_date": "2020-01-08T00:00:00Z",
+                  "winner": "28fa4128-d76a-4d42-9227-4ce6078c7d3f"
+                },
+                {
+                  "id": "c01eed35-6dd5-4e82-a3c8-380b50b9151d",
+                  "name": "Skateboard",
+                  "open_date": "2022-12-25T00:00:00Z",
+                  "close_date": "2022-12-31T00:00:00Z"
+                }
+              ],
+              "prices": [
+                {
+                  "payment_link_url": "https://buy.stripe.com/de99f2fc-payment-url-10",
+                  "price": 1000,
+                  "entries": 20,
+                  "currency_code": "usd",
+                  "external_id": "de99f2fc_stripe_id_10",
+                  "sweepstake_id": "de99f2fc-ca3e-11ec-9d64-0242ac120002"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/de99f2fc-payment-url-25",
+                  "price": 2500,
+                  "entries": 125,
+                  "currency_code": "usd",
+                  "external_id": "de99f2fc_stripe_id_25",
+                  "sweepstake_id": "de99f2fc-ca3e-11ec-9d64-0242ac120002"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/de99f2fc-payment-url-50",
+                  "price": 5000,
+                  "entries": 500,
+                  "currency_code": "usd",
+                  "external_id": "de99f2fc_stripe_id_50",
+                  "sweepstake_id": "de99f2fc-ca3e-11ec-9d64-0242ac120002"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/de99f2fc-payment-url-100",
+                  "price": 10000,
+                  "entries": 1200,
+                  "currency_code": "usd",
+                  "external_id": "de99f2fc_stripe_id_100",
+                  "sweepstake_id": "de99f2fc-ca3e-11ec-9d64-0242ac120002"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/de99f2fc-payment-url-150",
+                  "price": 15000,
+                  "entries": 2000,
+                  "currency_code": "usd",
+                  "external_id": "de99f2fc_stripe_id_150",
+                  "sweepstake_id": "de99f2fc-ca3e-11ec-9d64-0242ac120002"
+                }
+              ]
+            },
+            {
+              "id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9",
+              "title": "Win a playstation 5!",
+              "rules": "Things our lawyers want you to read",
+              "status": "WINNER_ANNOUNCED",
+              "cause": "Make a wish",
+              "slug": "ps5",
+              "draw_date": "2022-12-02T00:00:00Z",
+              "winner_announce_date": "2023-12-02T00:00:00Z",
+              "grand_prize": {
+                "name": "PS5",
+                "open_date": "2022-04-22T00:00:00Z",
+                "close_date": "2022-10-02T00:00:00Z",
+                "winner": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4"
+              },
+              "subprizes": [
+                {
+                  "id": "597ae26b-a9ed-453a-b65f-d6a95c76d7a4",
+                  "name": "Cash $1000",
+                  "open_date": "2022-04-22T00:00:00Z",
+                  "close_date": "2022-04-29T00:00:00Z",
+                  "winner": "10e02645-4d68-408d-be4a-9e0fb86d9ce0"
+                },
+                {
+                  "id": "2784d87f-b182-41d7-bd40-0835a7716f94",
+                  "name": "Cash $2000",
+                  "open_date": "2022-06-01T00:00:00Z",
+                  "close_date": "2022-06-08T00:00:00Z"
+                }
+              ],
+              "prices": [
+                {
+                  "payment_link_url": "https://buy.stripe.com/test_3cs02MdDEbZG1W0cNg",
+                  "price": 15000,
+                  "entries": 2000,
+                  "currency_code": "usd",
+                  "external_id": "price_1KwBtvDaFLymRAQ889hvg3Ir",
+                  "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/test_7sI7vedDEe7OcAEcNh",
+                  "price": 1000,
+                  "entries": 20,
+                  "currency_code": "usd",
+                  "external_id": "price_1KwBtvDaFLymRAQ8DSyoW9xe",
+                  "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/test_3cseXG5783ta58cdRm",
+                  "price": 2500,
+                  "entries": 125,
+                  "currency_code": "usd",
+                  "external_id": "price_1KwBtwDaFLymRAQ8OcOjvYv1",
+                  "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/test_fZe9DmdDEe7OcAE14B",
+                  "price": 5000,
+                  "entries": 500,
+                  "currency_code": "usd",
+                  "external_id": "price_1KwBtwDaFLymRAQ8Z5NEbLMI",
+                  "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+                },
+                {
+                  "payment_link_url": "https://buy.stripe.com/test_6oE3eYeHIgfWcAEeVs",
+                  "price": 10000,
+                  "entries": 1200,
+                  "currency_code": "usd",
+                  "external_id": "price_1KwBtxDaFLymRAQ8k8fdGfSX",
+                  "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "sweeps-example": {
+        "value": {
+          "id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9",
+          "title": "Win a Playtstation 5!",
+          "rules": "Things our lawyers want you to read",
+          "status": "WINNER_ANNOUNCED",
+          "cause": "Make a wish",
+          "slug": "ps5",
+          "draw_date": "2022-12-02T00:00:00Z",
+          "winner_announce_date": "2023-12-02T00:00:00Z",
+          "grand_prize": {
+            "name": "PS5",
+            "open_date": "2022-04-22T00:00:00Z",
+            "close_date": "2022-10-02T00:00:00Z",
+            "winner": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4"
+          },
+          "subprizes": [
+            {
+              "id": "597ae26b-a9ed-453a-b65f-d6a95c76d7a4",
+              "name": "Cash $1000",
+              "open_date": "2022-04-22T00:00:00Z",
+              "close_date": "2022-04-29T00:00:00Z",
+              "winner": "10e02645-4d68-408d-be4a-9e0fb86d9ce0"
+            },
+            {
+              "id": "2784d87f-b182-41d7-bd40-0835a7716f94",
+              "name": "Cash $2000",
+              "open_date": "2022-06-01T00:00:00Z",
+              "close_date": "2022-06-08T00:00:00Z"
+            }
+          ],
+          "prices": [
+            {
+              "payment_link_url": "https://buy.stripe.com/test_3cs02MdDEbZG1W0cNg",
+              "price": 15000,
+              "entries": 2000,
+              "currency_code": "usd",
+              "external_id": "price_1KwBtvDaFLymRAQ889hvg3Ir"
+            },
+            {
+              "payment_link_url": "https://buy.stripe.com/test_7sI7vedDEe7OcAEcNh",
+              "price": 1000,
+              "entries": 20,
+              "currency_code": "usd",
+              "external_id": "price_1KwBtvDaFLymRAQ8DSyoW9xe"
+            },
+            {
+              "payment_link_url": "https://buy.stripe.com/test_3cseXG5783ta58cdRm",
+              "price": 2500,
+              "entries": 125,
+              "currency_code": "usd",
+              "external_id": "price_1KwBtwDaFLymRAQ8OcOjvYv1"
+            },
+            {
+              "payment_link_url": "https://buy.stripe.com/test_fZe9DmdDEe7OcAE14B",
+              "price": 5000,
+              "entries": 500,
+              "currency_code": "usd",
+              "external_id": "price_1KwBtwDaFLymRAQ8Z5NEbLMI"
+            },
+            {
+              "payment_link_url": "https://buy.stripe.com/test_6oE3eYeHIgfWcAEeVs",
+              "price": 10000,
+              "entries": 1200,
+              "currency_code": "usd",
+              "external_id": "price_1KwBtxDaFLymRAQ8k8fdGfSX"
+            }
+          ]
+        }
+      },
+      "prices-example": {
+        "value": [
+          {
+            "payment_link_url": "https://buy.stripe.com/test_3cs02MdDEbZG1W0cNg",
+            "price": 15000,
+            "entries": 2000,
+            "currency_code": "usd",
+            "external_id": "price_1KwBtvDaFLymRAQ889hvg3Ir"
+          },
+          {
+            "payment_link_url": "https://buy.stripe.com/test_7sI7vedDEe7OcAEcNh",
+            "price": 1000,
+            "entries": 20,
+            "currency_code": "usd",
+            "external_id": "price_1KwBtvDaFLymRAQ8DSyoW9xe"
+          },
+          {
+            "payment_link_url": "https://buy.stripe.com/test_3cseXG5783ta58cdRm",
+            "price": 2500,
+            "entries": 125,
+            "currency_code": "usd",
+            "external_id": "price_1KwBtwDaFLymRAQ8OcOjvYv1"
+          },
+          {
+            "payment_link_url": "https://buy.stripe.com/test_fZe9DmdDEe7OcAE14B",
+            "price": 5000,
+            "entries": 500,
+            "currency_code": "usd",
+            "external_id": "price_1KwBtwDaFLymRAQ8Z5NEbLMI"
+          },
+          {
+            "payment_link_url": "https://buy.stripe.com/test_6oE3eYeHIgfWcAEeVs",
+            "price": 10000,
+            "entries": 1200,
+            "currency_code": "usd",
+            "external_id": "price_1KwBtxDaFLymRAQ8k8fdGfSX"
+          }
+        ]
+      },
+      "prize-example": {
+        "value": {
+          "id": "ec78938c-1f21-4613-ba5f-1f2562c5af05",
+          "name": "PS5",
+          "slug": "ps5",
+          "open_date": "2022-04-22T00:00:00Z",
+          "close_date": "2022-10-02T00:00:00Z",
+          "winner": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4"
+        }
+      }
+    },
+    "schemas": {
+      "Sweepstakes": {
+        "x-examples": {
+          "example-1": {
+            "id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9",
+            "title": "Win a playstation 5!",
+            "rules": "Things our lawyers want you to read",
+            "status": "WINNER_ANNOUNCED",
+            "cause": "Make a wish",
+            "prize": "PS5",
+            "open_date": "2022-04-22T00:00:00Z",
+            "close_date": "2022-10-02T00:00:00Z",
+            "draw_date": "2022-12-02T00:00:00Z",
+            "winner_announce_date": "2023-12-02T00:00:00Z",
+            "winner": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+            "prices": [
+              {
+                "payment_link_url": "https://buy.stripe.com/test_3cs02MdDEbZG1W0cNg",
+                "price": 150,
+                "entries": 2000,
+                "currency_code": "usd",
+                "external_id": "price_1KwBtvDaFLymRAQ889hvg3Ir",
+                "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+              },
+              {
+                "payment_link_url": "https://buy.stripe.com/test_7sI7vedDEe7OcAEcNh",
+                "price": 10,
+                "entries": 20,
+                "currency_code": "usd",
+                "external_id": "price_1KwBtvDaFLymRAQ8DSyoW9xe",
+                "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+              },
+              {
+                "payment_link_url": "https://buy.stripe.com/test_3cseXG5783ta58cdRm",
+                "price": 25,
+                "entries": 125,
+                "currency_code": "usd",
+                "external_id": "price_1KwBtwDaFLymRAQ8OcOjvYv1",
+                "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+              },
+              {
+                "payment_link_url": "https://buy.stripe.com/test_fZe9DmdDEe7OcAE14B",
+                "price": 50,
+                "entries": 500,
+                "currency_code": "usd",
+                "external_id": "price_1KwBtwDaFLymRAQ8Z5NEbLMI",
+                "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+              },
+              {
+                "payment_link_url": "https://buy.stripe.com/test_6oE3eYeHIgfWcAEeVs",
+                "price": 100,
+                "entries": 1200,
+                "currency_code": "usd",
+                "external_id": "price_1KwBtxDaFLymRAQ8k8fdGfSX",
+                "sweepstake_id": "f9079748-12dd-4f83-b82e-c4b8449ad7a9"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "examples": [
+          {
+            "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+            "title": "string",
+            "rules": "string",
+            "status": "OPEN",
+            "cause": "string",
+            "slug": "string",
+            "draw_date": "2019-08-24T14:15:22Z",
+            "winner_announce_date": "2019-08-24T14:15:22Z",
+            "grand_prize": {
+              "name": "PS5",
+              "open_date": "2022-04-22T00:00:00Z",
+              "close_date": "2022-10-02T00:00:00Z",
+              "winner": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4"
+            },
+            "subprizes": [
+              {
+                "id": "597ae26b-a9ed-453a-b65f-d6a95c76d7a4",
+                "name": "Cash $1000",
+                "open_date": "2022-04-22T00:00:00Z",
+                "close_date": "2022-04-29T00:00:00Z",
+                "winner": "10e02645-4d68-408d-be4a-9e0fb86d9ce0"
+              },
+              {
+                "id": "2784d87f-b182-41d7-bd40-0835a7716f94",
+                "name": "Cash $2000",
+                "open_date": "2022-06-01T00:00:00Z",
+                "close_date": "2022-06-08T00:00:00Z"
+              }
+            ],
+            "prices": [
+              {
+                "payment_link_url": "https://buy.stripe.com/test_28o5lC1Ag1u53g48wA",
+                "price": 2500,
+                "entries": 100,
+                "currency_code": "usd",
+                "external_id": "price_1KwBtxDaFLymRAQ8k8fdGfSX"
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rules": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "$ref": "#/components/schemas/SweepsStatus"
+          },
+          "cause": {
+            "type": "string",
+            "minLength": 1
+          },
+          "slug": {
+            "type": "string"
+          },
+          "draw_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "winner_announce_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "grand_prize": {
+            "$ref": "#/components/schemas/Prize"
+          },
+          "subprizes": {
+            "type": "array",
+            "uniqueItems": false,
+            "minItems": 0,
+            "items": {
+              "$ref": "#/components/schemas/Prize"
+            }
+          },
+          "prices": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "$ref": "#/components/schemas/Price"
+            }
+          },
+          "primary_tag": {
+            "$ref": "#/components/schemas/PrimaryTag"
+          },
+          "secondary_tag": {
+            "$ref": "#/components/schemas/SecondaryTag"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "rules",
+          "status",
+          "cause",
+          "slug",
+          "draw_date",
+          "winner_announce_date",
+          "grand_prize",
+          "prices",
+          "primary_tag",
+          "secondary_tag"
+        ]
+      },
+      "SweepsStatus": {
+        "type": "string",
+        "title": "SweepsStatus",
+        "enum": [
+          "OPEN",
+          "WINNER_ANNOUNCED",
+          "WINNER_PENDING"
+        ],
+        "examples": [
+          "OPEN"
+        ]
+      },
+      "Price": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "payment_link_url": "https://buy.stripe.com/test_28o5lC1Ag1u53g48wA",
+            "price": 25,
+            "entries": 100,
+            "currency_code": "usd",
+            "external_id": "stripe_ID|price_1KtHO0DaFLymRAQ8YeCLak3M"
+          }
+        },
+        "examples": [
+          {
+            "payment_link_url": "https://buy.stripe.com/test_28o5lC1Ag1u53g48wA",
+            "price": 2500,
+            "entries": 100,
+            "currency_code": "usd",
+            "external_id": "price_1KwBtxDaFLymRAQ8k8fdGfSX"
+          }
+        ],
+        "title": "Price",
+        "properties": {
+          "payment_link_url": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "example": "https://buy.stripe.com/test_28o5lC1Ag1u53g48wA"
+          },
+          "entries": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 500
+          },
+          "price": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 10
+          },
+          "currency_code": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 3,
+            "example": "usd"
+          },
+          "external_id": {
+            "type": "string",
+            "minLength": 1,
+            "example": "price_1KwBtxDaFLymRAQ8k8fdGfSX"
+          },
+          "sweepstake_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Required for POST, not returned in GET",
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "payment_link_url",
+          "entries",
+          "price",
+          "currency_code",
+          "external_id"
+        ]
+      },
+      "Error": {
+        "title": "Error",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          }
+        },
+        "description": "Basic error",
+        "examples": [
+          {
+            "detail": "Invalid request",
+            "status": 400
+          }
+        ]
+      },
+      "Prize": {
+        "title": "Prize",
+        "x-stoplight": {
+          "id": "wlh54yl4o4moa"
+        },
+        "type": "object",
+        "examples": [
+          {
+            "id": "ec78938c-1f21-4613-ba5f-1f2562c5af05",
+            "name": "PS5",
+            "open_date": "2022-04-22T00:00:00Z",
+            "close_date": "2022-10-02T00:00:00Z",
+            "winner": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4"
+          }
+        ],
+        "description": "Represents a grand prize as well as a sub-prize for a sweepstake.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "ec78938c-1f21-4613-ba5f-1f2562c5af05",
+            "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$",
+            "description": "prize uuid auto-generated by data store upon creation. Note that a grand prize does not have an id; it is stored directly within the sweepstakes db table.",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "example": "PS5",
+            "minLength": 1,
+            "description": "Name of the prize"
+          },
+          "open_date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-04-22T00:00:00Z",
+            "minLength": 1,
+            "description": "ISO 8601 UTC timestamp of when entry into the prize is open."
+          },
+          "close_date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-10-02T00:00:00Z",
+            "minLength": 1,
+            "description": "ISO 8601 UTC timestamp of when entry into the prize is closed."
+          },
+          "winner": {
+            "type": "string",
+            "description": "omaze customer ID of the winner. ",
+            "format": "uuid",
+            "example": "31dc1cc8-cd3e-4cb6-bf13-f8f44b55e0c4",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name",
+          "open_date",
+          "close_date"
+        ]
+      },
+      "PrimaryTag": {
+        "type": "string",
+        "title": "PrimaryTag",
+        "enum": [
+          "CARS",
+          "HOUSES",
+          "FINANCIAL_FREEDOM"
+        ],
+        "examples": [
+          "CARS"
+        ]
+      },
+      "SecondaryTag": {
+        "type": "string",
+        "title": "SecondaryTag",
+        "enum": [
+          "OUTDOOR_ADVENTURE",
+          "LUXURY"
+        ],
+        "examples": [
+          "LUXURY"
+        ]
+      }
+    },
+    "requestBodies": {},
+    "responses": {
+      "Error": {
+        "description": "Example error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "Bad Request": {
+                "value": {
+                  "errors": [
+                    {
+                      "status": 400,
+                      "detail": "missing required field 'title'"
+                    },
+                    {
+                      "status": 400,
+                      "detail": "missing required field 'rules'"
+                    }
+                  ]
+                }
+              },
+              "Internal Server Error": {
+                "value": {
+                  "errors": [
+                    {
+                      "status": 500,
+                      "detail": "a database error occured while reading sweepstake"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "ID": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "9efafe49-0b8a-8a7c-c750-3c96c8ebdd7d"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "examples": {
+              "ExampleID": {
+                "value": {
+                  "id": "9efafe49-0b8a-8a7c-c750-3c96c8ebdd7d"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "SweepsStatus": {
+        "name": "status",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "WINNER_ANNOUNCED",
+            "WINNER_PENDING"
+          ]
+        },
+        "style": "form"
+      }
+    }
+  }
+}

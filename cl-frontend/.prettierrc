@@ -1,0 +1,10 @@
+{
+  "tabWidth": 4,
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "trailingComma": "all",
+  "singleQuote": true,
+  "importOrder": ["^[.][.]/(.*)$", "^@/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

@@ -1,0 +1,17 @@
+export enum CartTestIds {
+    CART_CONTAINER = 'Cart-container',
+    CART_EMPTY_CONTAINER = 'Cart-empty-container',
+    CART_WARNING_CONTAINER = 'Cart-warning-container',
+    CART_LINE_ITEM = 'Cart-line-item',
+    CART_LINE_ITEM_AMOUNT = 'Cart-line-item-amount',
+    CART_LINE_ITEM_CHARITY = 'Cart-line-charity',
+    CART_LINE_ITEM_DECREASE = 'Cart-line-item-decrease',
+    CART_LINE_ITEM_ENTRIES = 'Cart-line-entries',
+    CART_LINE_ITEM_ICON_MINUS = 'Cart-line-icon-minus',
+    CART_LINE_ITEM_ICON_TRASH = 'Cart-line-icon-trash',
+    CART_LINE_ITEM_ICON_PLUS = 'Cart-line-icon-plus',
+    CART_LINE_ITEM_INCREASE = 'Cart-line-item-increase',
+    CART_LINE_ITEM_QUANTITY = 'Cart-line-item-quantity',
+    CART_LINE_ITEM_TITLE = 'Cart-line-item-title',
+    SHOP_NOW = 'Cart-shop-now',
+}
