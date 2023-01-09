@@ -24,6 +24,8 @@ Strapi CMS with [Plasmic](https://www.plasmic.app/) a UI builder tool we used to
 This is a backend Graphql server implementation, a personal project I worked on like a year ago. 
 It is written in Golang, I architected/designed the project and wrote more than 50% of the code
 
+![alt text](https://github.com/fmontada/jeff-glorify-code-example/blob/main/diagram.png "Architecture Diagram")
+
 ## Libs
 This are libs that I built that can be used in any project for, logger, config, and stats 
 
