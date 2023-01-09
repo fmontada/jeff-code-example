@@ -8,8 +8,9 @@
 I worked on this project for over six months. The goal of this project was to replace the Shopify IPD with Auth0 IPD
 so we could own the user data. Instead of users login into Shopify, users could log in to our own IDP services, and
 owning the Authentication/Authorization was what we considered as the first step to start building User Profile
-Feature to help with the business retention. I wrote 90% of the js/src/*.js. Those are Auth0 Rules; basically, 
-javascript funcs that allow us to customize the login flows/data, base in our use case. 
+Feature to help with the business retention. I wrote 90% of the `js/src/*.js`. Those are Auth0 Rules; basically, 
+javascript funcs that allow us to customize the login flows/data, base in our use case. For this project, 
+I also helped to build Shopify-Theme components that were integrated with the Auth0 Rules mentioned above
 
 ## Omaze cl-frontend
 This was my last project at Omaze. I worked as POD lead on this project, so I help to design/architected
