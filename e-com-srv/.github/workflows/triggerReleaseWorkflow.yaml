@@ -1,0 +1,47 @@
+name: 05 (Auto) Release Creation
+
+on:
+  push:
+    branches:
+      - master
+    tags-ignore:
+      - '*'
+    paths:
+      - "pkg/**"
+      - "cmd/**"
+      - "internal/**"
+      - "configs/**"
+      - "deployments/**"
+      - "build/**"
+      - "go.mod"
+      - "go.sum"
+
+jobs:
+  release:
+    name: Release to GitHub
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          # token: ${{ secrets.RELEASE_WORKFLOW_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: NPM install for semantic-release
+        run: npm install conventional-changelog-conventionalcommits
+        working-directory: ./.github/workflows
+
+      - name: Release to GitHub
+        working-directory: ./.github/workflows
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: gapcommerce-cicd
+          GIT_AUTHOR_EMAIL: info@gapcommerce.com
+          GIT_COMMITTER_NAME: gapcommerce-cicd
+          GIT_COMMITTER_EMAIL: info@gapcommerce.com
+        run: npx semantic-release
