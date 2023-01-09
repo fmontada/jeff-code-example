@@ -1,0 +1,74 @@
+name: Deploy from GitHub
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment'
+        required: true
+        default: 'qa'
+      tag:
+        description: 'Tag Version'
+        required: false
+        default: 'integration'
+
+env:
+  ENV: 'qa' # Default Env
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-18.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v1
+        with:
+          # We are using the integration branch until we define how we are going
+          # create tags for this repo
+          ref: ${{github.event.inputs.tag}}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.12.31
+
+      - name: AWS Credentials
+        run: |
+          mkdir -p ~/.aws
+          touch ~/.aws/credentials
+          echo "${{secrets.AWS_CREDENTIALS_FILE}}" > ~/.aws/credentials
+
+      - name: Config Environment
+        run: |
+          echo "TAG_VERSION=${{github.event.inputs.tag}}" >> $GITHUB_ENV
+          echo "ENV=${{github.event.inputs.env}}" >> $GITHUB_ENV
+
+      - name: TF Log
+        run: |
+          export TF_LOG=ERROR
+
+      - name: Init
+        run: |
+          terraform init
+
+      - name: ssm
+        run: |
+          ENV=${{ env.ENV }} make ssm
+
+      # In this step we are using aws cli to read all the ssm parameters that start with
+      # /auth0/, use the `sed` command to convert them to key="value" format and creating
+      # the `terraform.tfvars` config file
+      - name: AWS SSM Variables
+        run: |
+          aws ssm get-parameters-by-path --path /auth0/ \
+          --recursive --with-decryption --output text \
+          --query "Parameters[].[Name,Value]" --profile ${{ env.ENV }} |
+          sed -E 's#/auth0/([^[:space:]]*)[[:space:]]*#\1="#' |
+          sed -E 's/.$/&"/' \
+          > terraform.tfvars
+
+      - name: Deploy
+        run: |
+          ENV=${{ env.ENV }} make apply

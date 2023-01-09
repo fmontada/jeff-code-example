@@ -1,0 +1,22 @@
+auth0_domain    = "omaze-stg.us.auth0.com"
+auth0_client_id = ""
+auth0_secret    = ""
+
+auth0_identifier       = "https://user-service.stg.omazedev.com"
+auth0_user_service_url = "https://user-service.stg.omazedev.com"
+auth0_tenant_url       = "https://omaze-stg.us.auth0.com"
+auth0_callbacks = ["https://stage.omaze.com/account",
+  "https://stage.omaze.com",
+  "https://stage.omaze.com/account/login"
+]
+auth0_allowed_origins            = ["https://*.omaze.com"]
+auth0_allowed_logout_urls        = ["https://stage.omaze.com/account/logout"]
+auth0_web_origins                = ["https://*.omaze.com"]
+auth0_email_from_address         = "Omaze - Staging <weloveyou@stg-omazeaccounts.com>"
+auth0_change_password_result_url = "https://stage.omaze.com/account/login"
+auth0_fb_client_secret           = ""
+
+omaze_domain = "stg.omazedev.com"
+omaze_web_domain = "https://stage.omaze.com"
+
+gtm_id = "GTM-ID"

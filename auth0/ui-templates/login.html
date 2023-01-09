@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <title>Sign In with Omaze</title>
+    <link rel="shortcut icon" href="https://assets.prd.omazedev.com/web/assets/images/static/new-favicon32x32.png" />
+    <style>
+        /* Gellix */
+        @font-face {
+            font-family: "Gellix";
+            font-style: normal;
+            font-weight: 500;
+            src: url("https://assets.omaze.com/fonts/gellix/GellixMedium.woff") format("woff"), url("https://assets.omaze.com/fonts/gellix/GellixMedium.woff2") format("woff2");
+        }
+
+        body * {
+            font-family: Gellix !important;
+            font-style: normal !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.015em;
+        }
+
+        body {
+            margin: 0;
+            color: #090F15;
+            line-height: 24px;
+            font-size: 14px !important;
+        }
+
+        header {
+            display: block !important;
+            background: #1a1a1a;
+            position: fixed;
+            text-align: center;
+            width: 100%;
+            height: 64px;
+            z-index: 10000000;
+        }
+
+        .auth0-lock-widget {
+            border: 1px solid #C1C9D1;
+            width: 327px !important;
+            border-radius: 0 !important;
+            height: auto !important;
+            position: relative !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-header {
+            position: absolute !important;
+            top: -42px;
+            padding: 0 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-back-button {
+            background-image: url("data:image/svg+xml,%3Csvg width='8' height='13' viewBox='0 0 8 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.295794 7.16452C-0.0985985 6.80289 -0.0985985 6.19711 0.295794 5.83548L6.38275 0.254081C6.75221 -0.084693 7.33475 -0.084693 7.70421 0.254081C8.0986 0.615716 8.0986 1.22149 7.70421 1.58313L2.33869 6.49699L7.70421 11.4169C8.0986 11.7785 8.0986 12.3843 7.70421 12.7459C7.33475 13.0847 6.75221 13.0847 6.38275 12.7459L0.295794 7.16452Z' fill='%23090F15'/%3E%3C/svg%3E%0A") !important;
+            background-repeat: no-repeat !important;
+            background-position: 0 5px !important;
+            height: 21px !important;
+            border: none !important;
+            line-height: normal !important;
+            box-shadow: none !important;
+            width: unset !important;
+            position: static !important;
+            font-weight: bold !important;
+            text-align: left;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-back-button::before {
+            content: "Back to login";
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            margin-left: 17px;
+            letter-spacing: 0.015rem;
+            color: #090F15;
+            border-bottom: 2px solid #3B5C6B;
+        }
+
+        .auth0-lock-widget-container {
+            height: auto !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-content-wrapper {
+            overflow-x: visible !important;
+        }
+
+        /* tabs */
+        .auth0-lock.auth0-lock .auth0-lock-tabs {
+            box-shadow: 0 2px 0 0 #DDE2E8 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs li.auth0-lock-tabs-current{
+            box-shadow: 0 2px 0 0 #3B5C6B !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs li.auth0-lock-tabs-current span {
+            color: #090F15 !important;
+        }
+
+        .auth0-lock .auth0-lock-input-block {
+            margin-bottom: 4px !important;
+        }
+
+        .auth0-lock.auth0-lock-with-tabs .auth0-lock-input-block {
+            margin-bottom: 16px !important;
+        }
+
+        .auth0-lock-input-checkbox {
+            padding-top: 2px;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-input {
+            height: 62px !important;
+            border-radius: 4px !important;
+            font-size: 18px !important;
+            color: #4F5E6B !important;
+            line-height: 4 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-input::placeholder {
+            color: #4F5E6B;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs li a,
+        .auth0-lock.auth0-lock .auth0-lock-tabs li span {
+            padding: 14px 10px 14px !important;
+            font-weight: bold !important;
+            font-size: 16px !important;
+            letter-spacing: 0.015em;
+            color: #6D7B89 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-social-button {
+            height: 42px !important;
+        }
+
+        .auth0-lock-social-button-text {
+            font-size: 16px !important;
+            font-weight: bold !important;
+            padding-left: 70px !important;
+        }
+
+        .auth0-lock .auth0-lock-form div.auth0-lock-pane-separator {
+            padding-top: 14px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-content-body-wrapper {
+            border: none !important;
+            padding-top: 0 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-form {
+            padding: 24px !important;
+            padding-bottom: 20px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-form p {
+            text-align: left !important;
+            font-size: 16px !important;
+            color: #090F15 !important;
+            line-height: 24px !important;
+            margin-bottom: 23px !important;
+        }
+
+        /* or text */
+        .auth0-lock.auth0-lock .auth0-lock-form .auth0-lock-pane-separator + div p:first-child {
+            color: #090F15 !important;
+            margin-bottom: 15px !important;
+            text-align: center !important;
+            font-size: 14px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs-container {
+            margin-bottom: 26px !important;
+            margin-left: -24px !important;
+            margin-right: -24px !important;
+            margin-top: -24px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap {
+            border-radius: 4px !important;
+            border: 1px solid #919CA8 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-form .auth0-lock-alternative .auth0-lock-alternative-link {
+            color: #090F15 !important;
+            font-weight: bold !important;
+            padding-bottom: 1px;
+            border-bottom: 2px solid #3B5C6B;
+            text-decoration: none !important;
+            font-size: 14px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-form .auth0-lock-alternative {
+            margin-top: 24px !important;
+            margin-bottom: 4px !important;
+            text-align: center !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-submit {
+            border-radius: 76px !important;
+            background-color: #FFDD00 !important;
+            color: #090F15 !important;
+            margin: 24px;
+            margin-top: 0;
+            margin-bottom: 22px;
+            padding: 8px !important;
+            width: auto !important;
+            transition: none !important;
+        }
+
+        .auth0-lock.auth0-lock svg {
+            display: none !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-submit .auth0-label-submit {
+            font-style: normal !important;
+            font-weight: bold !important;
+            font-size: 20px !important;
+            text-transform: none !important;
+            height: 41px !important;
+        }
+
+        .auth0-global-message.auth0-global-message-error {
+            background: #DB2800 !important;
+            text-transform: none !important;
+            font-size: 16px !important;
+            margin-top: -1px;
+            margin-right: -1px;
+            margin-top: -1px;
+            line-height: 111% !important;
+            padding: 24px !important;
+        }
+
+        .auth0-global-message.auth0-global-message-error span {
+            color: white !important;
+        }
+
+        .auth0-global-message.auth0-global-message-error:first-letter {
+            text-transform: uppercase;
+        }
+
+        .auth0-global-message.auth0-global-message-success {
+            background: #00844C !important;
+            line-height: 111% !important;
+            padding: 25px !important;
+            text-transform: none !important;
+            font-size: 16px !important;
+        }
+
+        .auth0-global-message.auth0-global-message-success:first-letter {
+            text-transform: uppercase;
+        }
+
+        header img {
+            max-width: 8rem;
+            height: 64px;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-overlay {
+            background: none !important;
+        }
+
+        .auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-widget {
+            box-shadow: none !important;
+        }
+
+        .auth0-lock-submit {
+            font-weight: bold;
+            text-transform: initial !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-header-bg {
+            background: none !important;
+        }
+
+        .auth0-lock-header-bg-blur {
+            background-image: none !important;
+            filter: none !important;
+        }
+
+        .auth0-lock-header-bg-solid {
+            background-color: transparent !important;
+        }
+
+        .auth0-lock-firstname {
+            visibility: hidden;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-header-avatar {
+            display: none !important;
+        }
+
+        .auth0-lock-name,
+        .auth0-lock-header-logo {
+            display: none !important;
+        }
+
+        .auth0-lock-center {
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            padding-top: 15px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-cred-pane-internal-wrapper {
+            height: auto !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-cred-pane {
+            justify-content: center;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-close-button svg,
+        .auth0-lock.auth0-lock .auth0-lock-back-button svg {
+            display: none;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-header-welcome {
+            height: 0px;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap.auth0-lock-input-wrap-with-icon {
+            padding-left: 0px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-icon.auth0-lock-icon-box,
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-custom-icon.auth0-lock-icon-box {
+            width: 20px !important;
+            height: 20px !important;
+            bottom: 11px !important;
+            left: 12px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-icon path,
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-custom-icon path {
+            fill: #454545 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-checkbox [type="checkbox"] {
+            padding: 0;
+            appearance: none;
+            border: 1px solid rgba(26, 26, 26, 0.5);
+            border-radius: 3px;
+            background: white;
+            height: 24px;
+            width: 24px;
+            top: 0px;
+            position: absolute;
+            margin-top: 0 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-checkbox [type="checkbox"]:checked {
+            background-image: url("data:image/svg+xml,%3Csvg class='tick' width='14' height='11' viewBox='0 0 14 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.8021 0.144775C12.6083 -0.0489086 12.2957 -0.0481614 12.1027 0.146447L4.63031 7.68289L1.89729 4.92645C1.80432 4.83268 1.67822 4.78 1.54674 4.78C1.41526 4.78 1.28917 4.83268 1.19619 4.92645L0.145202 5.98645C0.052158 6.08029 -7.86871e-05 6.20759 8.897e-08 6.3403C7.93117e-05 6.47301 0.0524675 6.60025 0.145623 6.69398L4.28019 10.854C4.47386 11.0488 4.78742 11.0486 4.98086 10.8536L13.8548 1.90355C13.9481 1.80949 14.0003 1.68183 14 1.54882C13.9997 1.4158 13.9468 1.28839 13.8531 1.19477L12.8021 0.144775Z' fill='white'%3E%3C/path%3E%3C/svg%3E");
+            background-color: #0193A7;
+            border-color: #0193A7;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-checkbox [type="checkbox"]:focus {
+            outline: 0;
+            border: 1px solid rgba(26, 26, 26, 0.5);
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-checkbox span {
+            margin-left: 32px !important;
+            font-size: 12px !important;
+            line-height: 18px !important;
+            font-weight: normal !important;
+        }
+
+        .auth0-lock-terms a {
+            border-bottom: 2px #3B5C6B solid;
+            line-height: 1.25rem;
+        }
+
+        .auth0-lock-with-terms.auth0-lock .auth0-lock-content {
+            padding-bottom: 170px;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-terms {
+            background: #F8F9FA !important;
+            position: absolute !important;
+            bottom: 6px;
+            color: #090F15 !important;
+        }
+
+        body .auth0-lock.auth0-lock .auth0-lock-terms {
+            text-align: left !important;
+            border: 1px solid #C1C9D1;
+            border-top: none;
+            margin-left: -1px;
+            margin-right: -1px;
+            padding: 15px 24px 19px !important;
+            font-size: 14px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-terms a {
+            display: inline-block;
+            color: #090F15 !important;
+        }
+
+        body .auth0-lock.auth0-lock .auth0-lock-terms span {
+            line-height: 21px !important;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .auth0-lock-with-terms.auth0-lock .auth0-lock-submit {
+            margin-top: -167px;
+            z-index: 1;
+            margin-bottom: 30px;
+        }
+
+        .auth0-lock-error-msg {
+            white-space: normal !important;
+        }
+
+        .auth0-lock-error-msg * {
+            color: #ec1c24 !important;
+            font-size: 16px !important;
+        }
+
+        @media screen and (max-width: 480px) {
+            .auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-widget {
+                display: inline-block;
+            }
+
+            .auth0-lock.auth0-lock.auth0-lock-opened.auth0-lock-with-terms .auth0-lock-body-content {
+                margin-bottom: 0 !important;
+            }
+
+            .auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-terms {
+                width: auto !important;
+            }
+        }
+    </style>
+
+    <!-- No scripts above Cookie Compliance --> 
+    <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8" data-domain-script="${onetrust_script_id}"></script>
+
+    <script src="https://cdn.optimizely.com/js/14464890104.js"></script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','${gtm_id}');</script>
+    <!-- End Google Tag Manager -->
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${gtm_id}"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header>
+        <a title="Omaze" href="${omaze_web_domain}">
+            <img src="https://assets.prd.omazedev.com/new-logo-white.svg" alt="Omaze" />
+        </a>
+    </header>
+
+    <!--[if IE 8]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.5/ie8.js"></script>
+    <![endif]-->
+
+    <!--[if lte IE 9]>
+    <script src="https://cdn.auth0.com/js/base64.js"></script>
+    <script src="https://cdn.auth0.com/js/es5-shim.min.js"></script>
+    <![endif]-->
+
+    <script src="https://cdn.auth0.com/js/lock/11.27/lock.min.js"></script>
+    <script>
+        // Decode utf8 characters properly
+        var config = JSON.parse(decodeURIComponent(escape(window.atob('@@config@@'))));
+        config.extraParams = config.extraParams || {};
+        var connection = config.connection;
+        var prompt = config.prompt;
+        var languageDictionary;
+        var language;
+
+        if (config.dict && config.dict.signin && config.dict.signin.title) {
+            languageDictionary = { title: "" }; // config.dict.signin.title
+        } else if (typeof config.dict === 'string') {
+            language = config.dict;
+        }
+        var loginHint = config.extraParams.login_hint;
+        var colors = config.colors || {};
+
+        var optInDefaultValue = "false";
+        if (config.extraParams.country_code === "US") {
+            optInDefaultValue = "true";
+        }
+
+        var initialScreen = "login";
+        if (config.extraParams.initialScreen === "signUp") {
+            initialScreen = "signUp";
+        }
+
+        // Available Lock configuration options: https://auth0.com/docs/libraries/lock/v11/configuration
+        var lock = new Auth0Lock(config.clientID, config.auth0Domain, {
+            auth: {
+                redirectUrl: config.callbackURL,
+                responseType: (config.internalOptions || {}).response_type ||
+                    (config.callbackOnLocationHash ? 'token' : 'code'),
+                params: config.internalOptions
+            },
+            loginAfterSignUp: true,
+            configurationBaseUrl: config.clientConfigurationBaseUrl,
+            overrides: {
+                __tenant: config.auth0Tenant,
+                __token_issuer: config.authorizationServer.issuer
+            },
+            assetsUrl: config.assetsUrl,
+            allowedConnections: connection ? [connection] : null,
+            rememberLastLogin: !prompt,
+            language: language,
+            initialScreen,
+            languageDictionary: {
+                error: {
+                    login: {
+                        "lock.invalid_email_password": "Incorrect email or password.",
+                    },
+                },
+                success: {
+                    signUp: "Thanks for signing up, Please check your email to verify your account before logging in",
+                    forgotPassword: "We just sent you an email to reset your password."
+                },
+                blankPasswordErrorHint: "Password is required.",
+                blankEmailErrorHint: "Email address is required.",
+                invalidEmailErrorHint: "Oops, that doesn’t seem to be a valid email!",
+                invalidPasswordErrorHint: "Password doesn’t meet requirements.",
+                forgotPasswordAction: "Forgot your password?",
+                loginLabel: "Log in",
+                loginSubmitLabel: "Log in",
+                signUpTitle: 'Sign up',
+                signUpLabel: 'Sign up',
+                signUpSubmitLabel: 'Sign up',
+                signUpTerms: 'By signing up, you agree to our <a href="https://www.omaze.com/pages/terms">Terms of Service</a> and <a href="https://www.omaze.com/pages/privacy">Privacy Policy</a>.',
+            },
+            theme: {
+                logo: '${logo_uri}',
+                primaryColor: colors.primary ? colors.primary : '#ea2786'
+            },
+            prefill: loginHint ? { email: loginHint, username: loginHint } : null,
+            closable: false,
+            defaultADUsernameFromEmailPrefix: false,
+            additionalSignUpFields: [{
+                type: "checkbox",
+                name: "optIn",
+                prefill: optInDefaultValue,
+                placeholder: "Get bonus entries, winner info, impact updates, and more! You can opt out at any time, and opting in isn’t required to participate with Omaze."
+            }]
+        }); 
+
+        if (colors.page_background) {
+            var css = '.auth0-lock.auth0-lock .auth0-lock-overlay { background: ' +
+                colors.page_background +
+                ' }';
+            var style = document.createElement('style');
+
+            style.appendChild(document.createTextNode(css));
+
+            document.body.appendChild(style);
+        }
+
+        // error handling
+        var dictionary = new Map();
+        dictionary.set('Access expired.', 'This link has expired.');
+        dictionary.set('This URL can be used only once', 'This URL can be used only once.');
+        dictionary.set('default', 'Oops, something went wrong. Please try again.');
+        var flashMessage;
+
+        const searchParams = new URLSearchParams(window.location.search);
+        if (searchParams.has('return_to')) {
+            const returnToUrl = new URL(searchParams.get('return_to'));
+            const returnToUrlSearchParams = new URLSearchParams(returnToUrl.search);
+
+            if (returnToUrlSearchParams.has('success') &&
+                returnToUrlSearchParams.get('success') === 'false') {
+                var errorMessage = dictionary.get(returnToUrlSearchParams.get('message'));
+
+                if (!errorMessage) {
+                    errorMessage = dictionary.get('default');
+                }
+
+                flashMessage = {
+                    type: 'error',
+                    text: errorMessage,
+                }
+            }
+        }
+
+        lock.show({ flashMessage: flashMessage });
+    </script>
+</body>
+
+</html>

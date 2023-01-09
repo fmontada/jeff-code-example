@@ -1,0 +1,7 @@
+auth0_audience: https://gateway-cl.prd.omazedev.com
+auth0_client_id: 98rdsJWCpbvO3loqvUfSoy7a7utVFX7t
+auth0_domain: omaze-cl-prd.us.auth0.com
+auth0_custom_dns: login.dogfood.omaze.com
+ses_user_aws_key_id: AKIATEOBXNZSZD5B5LMU
+omaze_ios_team_id: CF9SSEN8EE
+omaze_ios_app_bundle_identifier: com.omaze.mobile

@@ -1,0 +1,7 @@
+# This is a comment.
+# Each line is a file pattern followed by one or more owners.
+
+# All terraform files, and files inside the .github directory
+# should be reviewed by the SRE Team.
+*.tf @omaze/sre
+.github/ @omaze/sre

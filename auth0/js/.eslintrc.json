@@ -1,0 +1,30 @@
+{
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "semi": "error",
+    "indent": [
+      "error",
+      4
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "no-extra-semi": "error",
+    "no-undef": 0,
+    "arrow-parens": [
+      "error",
+      "always"
+    ]
+  },
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true
+  }
+}

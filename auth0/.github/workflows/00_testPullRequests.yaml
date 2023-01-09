@@ -1,0 +1,155 @@
+name: 00 (Auto) Pull Request Unit Tests
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+    branches: [integration]
+    paths:
+      - "environments/qa/**"
+      - "environments/stg/**"
+      - "environments/prd/**"
+
+env:
+  TF_VERSION: 1.0.0
+  TG_VERSION: 0.38.5
+  CI: true
+
+jobs:          
+  test-changed-folders:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: 
+        env: ["qa", "stg", "prd"]
+        subfolder: ["base", "actions"]
+
+    steps:
+      - name: Git checkout
+        id: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.1
+        with:
+          terragrunt_version: ${{ env.TG_VERSION }}
+
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false 
+
+      - name: Setup SSH Keys and known_hosts
+        #  Copied from https://github.com/maddox/actions/blob/master/ssh/entrypoint.sh
+        run: |
+          SSH_PATH="$HOME/.ssh"
+          mkdir -p "$SSH_PATH"
+          touch "$SSH_PATH/known_hosts"
+          echo "${{secrets.ID_RSA}}" > "$SSH_PATH/id_rsa"
+          chmod 700 "$SSH_PATH"
+          ssh-keyscan github.com >> "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/id_rsa"
+          eval $(ssh-agent)
+          ssh-add "$SSH_PATH/id_rsa"
+
+      - name: AWS Credentials
+        id: aws-credentials
+        run: |
+          mkdir -p ~/.aws
+          touch ~/.aws/credentials
+          echo "${{secrets.AWS_CREDENTIALS_FILE}}" > ~/.aws/credentials
+          
+      - name: Terragrunt Format
+        id: fmt
+        working-directory: environments/${{ matrix.env }}/cl/${{ matrix.subfolder }}
+        run: terragrunt hclfmt --terragrunt-check
+        continue-on-error: true
+
+      - name: Terragrunt Init
+        id: init
+        working-directory: environments/${{ matrix.env }}/cl/${{ matrix.subfolder }}
+        run: terragrunt init
+
+      - name: Terragrunt Validate
+        id: validate
+        working-directory: environments/${{ matrix.env }}/cl/${{ matrix.subfolder }}
+        run: |
+          unset t_std t_err
+  
+          eval "$( terragrunt validate -no-color \
+                  2> >(t_err=$(cat); typeset -p t_err) \
+                   > >(t_std=$(cat); typeset -p t_std) )"
+  
+          t_err="${t_err//'%'/'%25'}"
+          t_err="${t_err//$'\n'/'%0A'}"
+          t_err="${t_err//$'\r'/'%0D'}"
+  
+          echo "::set-output name=stderr::$t_err"
+  
+          t_std="${t_std//'%'/'%25'}"
+          t_std="${t_std//$'\n'/'%0A'}"
+          t_std="${t_std//$'\r'/'%0D'}"
+  
+          echo "::set-output name=stdout::$t_std"
+        
+      - name: Terragrunt Plan
+        id: plan
+        working-directory: environments/${{ matrix.env }}/cl/${{ matrix.subfolder }}
+        run: |
+          terragrunt plan -out=plan.tmp
+          terragrunt show -no-color plan.tmp >${GITHUB_WORKSPACE}/plan.out
+        continue-on-error: true
+
+      - name: Install fs module
+        run: npm install fs
+
+      - name: Update Pull Request
+        uses: actions/github-script@v6
+        env:
+          VALIDATE: "${{ steps.validate.outputs.stderr }}\n${{ steps.validate.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.RELEASE_WORKFLOW_TOKEN }}
+          debug: true
+          script: |
+            const run_url = process.env.GITHUB_SERVER_URL + '/' + process.env.GITHUB_REPOSITORY + '/actions/runs/' + process.env.GITHUB_RUN_ID
+            const run_link = '<a href="' + run_url + '">Actions</a>.'
+            const fs = require('fs')
+            const plan_file = fs.readFileSync('plan.out', 'utf8')
+            const plan = plan_file.length > 65000 ? plan_file.toString().substring(0, 65000) + " ..." : plan_file
+            const truncated_message = plan_file.length > 65000 ? "Output is too long and was truncated. You can read full Plan in " + run_link + "<br /><br />" : ""
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+
+            \`\`\`\n
+            ${process.env.VALIDATE}
+            \`\`\`
+
+            </details>
+
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            
+            <details><summary>Show Plan</summary>
+            
+            \`\`\`\n
+            ${plan}
+            \`\`\`
+            
+            </details>
+            ${truncated_message}
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ github.workspace }}\`, Workflow: \`${{ github.workflow }}\`*`;
+              
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terragrunt Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1

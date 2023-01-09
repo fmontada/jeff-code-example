@@ -1,0 +1,110 @@
+name: 01 (Auto) Apply Non-Prod on Merge
+
+on:
+  push:
+    branches: [integration]
+    paths:
+      - "environments/qa/**"
+      - "environments/stg/**"
+
+env:
+  TF_VERSION: 1.0.0
+  TG_VERSION: 0.38.5
+  CI: true
+
+jobs:
+  get-changed-folders:
+    runs-on: ubuntu-latest
+    outputs:
+       changed-folders: ${{ steps.changes.outputs.changed-folders }}
+    steps:
+      - name: Git checkout
+        id: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get changed folders
+        id: changes
+        run: |
+          matrix=$((
+            echo '{ "changed-folders" : '
+            echo $(git diff --name-only --diff-filter=ACMRT ${{ github.event.before }} ${{ github.sha }} | grep -E '.hcl$|.yaml$|.yml$' | grep -v 'prd' | sed 's|\(.*\)/.*|\1|' | uniq | jq -R -s -c 'split("\n")[:-1]')
+            echo "}"
+          ) | jq -c .)
+          echo "::set-output name=changed-folders::$matrix"
+
+  check_matrix:
+    runs-on: ubuntu-latest
+    needs: get-changed-folders
+    steps:
+      - name: Install json2yaml
+        run: |
+          sudo npm install -g json2yaml
+      - name: Check matrix definition
+        run: |
+          matrix='${{ needs.get-changed-folders.outputs.changed-folders }}'
+          echo $matrix
+          echo $matrix | jq .
+          echo $matrix | json2yaml
+
+  apply-changed-folders:
+    runs-on: ubuntu-latest
+    needs: get-changed-folders
+    strategy:
+      fail-fast: false
+      matrix:
+        ${{ fromJSON(needs.get-changed-folders.outputs.changed-folders) }}
+
+    steps:
+      - name: Git checkout
+        id: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.1
+        with:
+          terragrunt_version: ${{ env.TG_VERSION }}
+
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false 
+
+      - name: Setup SSH Keys and known_hosts
+        #  Copied from https://github.com/maddox/actions/blob/master/ssh/entrypoint.sh
+        run: |
+          SSH_PATH="$HOME/.ssh"
+          mkdir -p "$SSH_PATH"
+          touch "$SSH_PATH/known_hosts"
+          echo "${{secrets.ID_RSA}}" > "$SSH_PATH/id_rsa"
+          chmod 700 "$SSH_PATH"
+          ssh-keyscan github.com >> "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/id_rsa"
+          eval $(ssh-agent)
+          ssh-add "$SSH_PATH/id_rsa"
+
+      - name: AWS Credentials
+        id: aws-credentials
+        run: |
+          mkdir -p ~/.aws
+          touch ~/.aws/credentials
+          echo "${{secrets.AWS_CREDENTIALS_FILE}}" > ~/.aws/credentials
+                        
+      - name: Terragrunt Init
+        id: init
+        working-directory: ${{ matrix.changed-folders }}
+        run: terragrunt init
+      
+      - name: Terragrunt Plan
+        id: plan
+        working-directory: ${{ matrix.changed-folders }}
+        run: terragrunt plan -no-color
+
+      - name: Terragrunt Apply
+        id: apply
+        working-directory: ${{ matrix.changed-folders }}
+        run: terragrunt apply -no-color -auto-approve
