@@ -1,0 +1,75 @@
+name: Pull Request Unit Tests
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [master]
+    paths-ignore:
+      - ".github/**"
+      - ".githooks/**"
+      - "**.md"
+
+  issue_comment:
+    types: [created]
+
+env:
+  CI: true
+
+jobs:
+  test:
+    if: |
+      (startsWith(github.event.comment.body, '/test'))
+      || (github.event_name == 'pull_request')
+    runs-on: [ubuntu-18.04]
+
+    steps:
+      - name: Git checkout
+        id: checkout
+        uses: actions/checkout@v1
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16.0
+
+      - name: Setup SSH Keys and known_hosts
+        #  Copied from https://github.com/maddox/actions/blob/master/ssh/entrypoint.sh
+        run: |
+          SSH_PATH="$HOME/.ssh"
+          mkdir -p "$SSH_PATH"
+          touch "$SSH_PATH/known_hosts"
+          echo "${{secrets.ID_RSA}}" > "$SSH_PATH/id_rsa"
+          chmod 700 "$SSH_PATH"
+          ssh-keyscan github.com >> "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/id_rsa"
+          eval $(ssh-agent)
+          ssh-add "$SSH_PATH/id_rsa"
+
+      # https://github.com/actions/cache/blob/main/examples.md#go---modules
+      - name: Set up dependency cache
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          #optional key to hit if first key misses
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Install dependencies
+        id: deps
+        env:
+          GOPRIVATE: github.com/gap-commerce
+        run: |
+          git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
+          go mod download -x
+
+      - name: Run unit tests
+        id: test
+        run: make test
+        env:
+          ENV: value
+
+      - name: Output code coverage
+        id: coverage
+        run: make cover
