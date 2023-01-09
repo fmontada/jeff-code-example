@@ -1,0 +1,42 @@
+version: 0.2
+
+env:
+    variables:
+        BUSINESS_ID: "123"
+        ACCOUNT_ID: ""
+        S3_BUCKET_NAME: "testing-codebuild-nextjs"
+        CLOUD_FRONT_DISTRIBUTION_ID: ""
+    #secrets-manager:
+    # key: secret-id:json-key:version-stage:version-id
+    # key: secret-id:json-key:version-stage:version-id
+    #exported-variables:
+    # - variable
+    # - variable
+    #git-credential-helper: yes
+
+phases:
+    install:
+        commands:
+            - npm install
+        #pre_build:
+        #commands:
+        # - command
+    build:
+        commands:
+            - BUSINESS_ID=$BUSINESS_ID npm run build
+            - BUSINESS_ID=$BUSINESS_ID npm run export
+    post_build:
+        commands:
+            - aws s3 sync out s3://$S3_BUCKET_NAME --delete --cache-control 'public, max-age=31536000, immutable' --exclude '*' --include '_next/*'
+            - aws s3 sync out s3://$S3_BUCKET_NAME --delete --cache-control 'public, max-age=0, must-revalidate' --include '*' --exclude '_next/*'
+#artifacts:
+#files:
+# - location
+# - location
+#name: $(date +%Y-%m-%d)
+#discard-paths: yes
+#base-directory: location
+cache:
+    paths:
+        - "node_modules/**/*" # Cache `node_modules` for faster `yarn` or `npm i`
+        - ".next/cache/**/*" # Cache Next.js for faster application rebuilds

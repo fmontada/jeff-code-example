@@ -15,8 +15,9 @@ javascript funcs that allow us to customize the login flows/data, base in our us
 This was my last project at Omaze. I worked as POD lead on this project, so I help to design/architected
 the project, and I also played the role of an individual contributor. An example of my contribution
 was this Strapi Component `cl-frontend/components/Strapi/strapi.tsx`. It is a custom component that allowed us to connect 
-Strapi CMS with [Plasmic](https://www.plasmic.app/) a UI builder tool we used to create static pages.
-
+Strapi CMS with [Plasmic](https://www.plasmic.app/) a UI builder tool we used to create static pages. I also 
+implemented this `cl-frontend/components/Auth0/Auth0Provider.tsx` to integrate `Auth0` 
+into our new frontend stack. 
 
 ## E-commerce backend service
 `/e-com-srv`

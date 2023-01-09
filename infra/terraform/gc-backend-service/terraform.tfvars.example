@@ -1,0 +1,13 @@
+# # Aws
+# region     = "us-west-1"
+# profile    = "fmontada"
+# account_id = "121464863648"
+#
+# # Api Gateway
+# api_name = "gc-graphql-api"
+#
+# # Lambda
+# runtime       = "nodejs8.10"
+# filename      = "../modules/lambda/source/node-function.zip"
+# function_name = "gc-backend"
+# handler       = "graphql.graphqlHandler"

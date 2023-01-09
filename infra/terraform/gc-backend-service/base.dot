@@ -1,0 +1,719 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_api_gateway_authorizer.authorizer" [label = "aws_api_gateway_authorizer.authorizer", shape = "box"]
+		"[root] aws_api_gateway_deployment.dev_deployment" [label = "aws_api_gateway_deployment.dev_deployment", shape = "box"]
+		"[root] aws_api_gateway_deployment.prod_deployment" [label = "aws_api_gateway_deployment.prod_deployment", shape = "box"]
+		"[root] aws_api_gateway_deployment.qa_deployment" [label = "aws_api_gateway_deployment.qa_deployment", shape = "box"]
+		"[root] aws_api_gateway_integration.get_integ" [label = "aws_api_gateway_integration.get_integ", shape = "box"]
+		"[root] aws_api_gateway_integration.post_intg" [label = "aws_api_gateway_integration.post_intg", shape = "box"]
+		"[root] aws_iam_policy.iam_invoke_role" [label = "aws_iam_policy.iam_invoke_role", shape = "box"]
+		"[root] aws_iam_policy.lambda_iam_policy" [label = "aws_iam_policy.lambda_iam_policy", shape = "box"]
+		"[root] aws_iam_role.iam_apiw_execution_role" [label = "aws_iam_role.iam_apiw_execution_role", shape = "box"]
+		"[root] aws_iam_role.iam_for_lambda" [label = "aws_iam_role.iam_for_lambda", shape = "box"]
+		"[root] aws_iam_role_policy_attachment.attachment_policy" [label = "aws_iam_role_policy_attachment.attachment_policy", shape = "box"]
+		"[root] aws_iam_role_policy_attachment.attachment_role" [label = "aws_iam_role_policy_attachment.attachment_role", shape = "box"]
+		"[root] aws_lambda_layer_version.lambda_layer" [label = "aws_lambda_layer_version.lambda_layer", shape = "box"]
+		"[root] aws_s3_bucket.static_metadata" [label = "aws_s3_bucket.static_metadata", shape = "box"]
+		"[root] data.aws_iam_policy_document.apiw_assume_role_policy" [label = "data.aws_iam_policy_document.apiw_assume_role_policy", shape = "box"]
+		"[root] data.aws_iam_policy_document.apiw_invoke_policy" [label = "data.aws_iam_policy_document.apiw_invoke_policy", shape = "box"]
+		"[root] data.aws_iam_policy_document.lambda_assume_role_policy" [label = "data.aws_iam_policy_document.lambda_assume_role_policy", shape = "box"]
+		"[root] data.aws_iam_policy_document.lambda_policy_document" [label = "data.aws_iam_policy_document.lambda_policy_document", shape = "box"]
+		"[root] local.active_env" [label = "local.active_env", shape = "note"]
+		"[root] local.dev" [label = "local.dev", shape = "note"]
+		"[root] local.env" [label = "local.env", shape = "note"]
+		"[root] local.lambda_uri" [label = "local.lambda_uri", shape = "note"]
+		"[root] local.prod" [label = "local.prod", shape = "note"]
+		"[root] local.qa" [label = "local.qa", shape = "note"]
+		"[root] local.workspace" [label = "local.workspace", shape = "note"]
+		"[root] module.apigateway.aws_api_gateway_integration._" [label = "module.apigateway.aws_api_gateway_integration._", shape = "box"]
+		"[root] module.apigateway.aws_api_gateway_integration_response._" [label = "module.apigateway.aws_api_gateway_integration_response._", shape = "box"]
+		"[root] module.apigateway.aws_api_gateway_method._" [label = "module.apigateway.aws_api_gateway_method._", shape = "box"]
+		"[root] module.apigateway.aws_api_gateway_method.method_get" [label = "module.apigateway.aws_api_gateway_method.method_get", shape = "box"]
+		"[root] module.apigateway.aws_api_gateway_method.method_post" [label = "module.apigateway.aws_api_gateway_method.method_post", shape = "box"]
+		"[root] module.apigateway.aws_api_gateway_method_response._" [label = "module.apigateway.aws_api_gateway_method_response._", shape = "box"]
+		"[root] module.apigateway.aws_api_gateway_resource.root" [label = "module.apigateway.aws_api_gateway_resource.root", shape = "box"]
+		"[root] module.apigateway.aws_api_gateway_rest_api.api" [label = "module.apigateway.aws_api_gateway_rest_api.api", shape = "box"]
+		"[root] module.apigateway.local.header_names" [label = "module.apigateway.local.header_names", shape = "note"]
+		"[root] module.apigateway.local.header_values" [label = "module.apigateway.local.header_values", shape = "note"]
+		"[root] module.apigateway.local.headers" [label = "module.apigateway.local.headers", shape = "note"]
+		"[root] module.apigateway.local.integration_response_parameters" [label = "module.apigateway.local.integration_response_parameters", shape = "note"]
+		"[root] module.apigateway.local.method_response_parameters" [label = "module.apigateway.local.method_response_parameters", shape = "note"]
+		"[root] module.apigateway.local.parameter_names" [label = "module.apigateway.local.parameter_names", shape = "note"]
+		"[root] module.apigateway.local.true_list" [label = "module.apigateway.local.true_list", shape = "note"]
+		"[root] module.apigateway.output.execution_arn" [label = "module.apigateway.output.execution_arn", shape = "note"]
+		"[root] module.apigateway.output.graphql_resouce_id" [label = "module.apigateway.output.graphql_resouce_id", shape = "note"]
+		"[root] module.apigateway.output.graphql_resouce_parent_id" [label = "module.apigateway.output.graphql_resouce_parent_id", shape = "note"]
+		"[root] module.apigateway.output.graphql_resouce_path" [label = "module.apigateway.output.graphql_resouce_path", shape = "note"]
+		"[root] module.apigateway.output.id" [label = "module.apigateway.output.id", shape = "note"]
+		"[root] module.apigateway.output.root_resource_id" [label = "module.apigateway.output.root_resource_id", shape = "note"]
+		"[root] module.apigateway.provider.aws" [label = "module.apigateway.provider.aws", shape = "diamond"]
+		"[root] module.apigateway.var.allow_credentials" [label = "module.apigateway.var.allow_credentials", shape = "note"]
+		"[root] module.apigateway.var.allow_headers" [label = "module.apigateway.var.allow_headers", shape = "note"]
+		"[root] module.apigateway.var.allow_max_age" [label = "module.apigateway.var.allow_max_age", shape = "note"]
+		"[root] module.apigateway.var.allow_methods" [label = "module.apigateway.var.allow_methods", shape = "note"]
+		"[root] module.apigateway.var.allow_origin" [label = "module.apigateway.var.allow_origin", shape = "note"]
+		"[root] module.apigateway.var.api_name" [label = "module.apigateway.var.api_name", shape = "note"]
+		"[root] module.apigateway.var.authorization" [label = "module.apigateway.var.authorization", shape = "note"]
+		"[root] module.apigateway.var.aws_api_gateway_authorizer_id" [label = "module.apigateway.var.aws_api_gateway_authorizer_id", shape = "note"]
+		"[root] module.apigateway.var.profile" [label = "module.apigateway.var.profile", shape = "note"]
+		"[root] module.apigateway.var.region" [label = "module.apigateway.var.region", shape = "note"]
+		"[root] module.cognito.aws_cognito_user_group.role" [label = "module.cognito.aws_cognito_user_group.role", shape = "box"]
+		"[root] module.cognito.aws_cognito_user_pool.pool" [label = "module.cognito.aws_cognito_user_pool.pool", shape = "box"]
+		"[root] module.cognito.aws_cognito_user_pool_client.client" [label = "module.cognito.aws_cognito_user_pool_client.client", shape = "box"]
+		"[root] module.cognito.local.attributes" [label = "module.cognito.local.attributes", shape = "note"]
+		"[root] module.cognito.local.default_attributes" [label = "module.cognito.local.default_attributes", shape = "note"]
+		"[root] module.cognito.output.arn" [label = "module.cognito.output.arn", shape = "note"]
+		"[root] module.cognito.output.endpoint" [label = "module.cognito.output.endpoint", shape = "note"]
+		"[root] module.cognito.output.id" [label = "module.cognito.output.id", shape = "note"]
+		"[root] module.cognito.provider.aws" [label = "module.cognito.provider.aws", shape = "diamond"]
+		"[root] module.cognito.var.cognito_user_pool_name" [label = "module.cognito.var.cognito_user_pool_name", shape = "note"]
+		"[root] module.cognito.var.custom_attribute_list" [label = "module.cognito.var.custom_attribute_list", shape = "note"]
+		"[root] module.cognito.var.profile" [label = "module.cognito.var.profile", shape = "note"]
+		"[root] module.cognito.var.region" [label = "module.cognito.var.region", shape = "note"]
+		"[root] module.cognito.var.roles" [label = "module.cognito.var.roles", shape = "note"]
+		"[root] module.cognito.var.schemas_number" [label = "module.cognito.var.schemas_number", shape = "note"]
+		"[root] module.cognito.var.schemas_string" [label = "module.cognito.var.schemas_string", shape = "note"]
+		"[root] module.cognito.var.username_attributes" [label = "module.cognito.var.username_attributes", shape = "note"]
+		"[root] module.lambda.aws_cloudwatch_log_group.log_group" [label = "module.lambda.aws_cloudwatch_log_group.log_group", shape = "box"]
+		"[root] module.lambda.aws_lambda_alias.dev_alias" [label = "module.lambda.aws_lambda_alias.dev_alias", shape = "box"]
+		"[root] module.lambda.aws_lambda_alias.prod_alias" [label = "module.lambda.aws_lambda_alias.prod_alias", shape = "box"]
+		"[root] module.lambda.aws_lambda_alias.qa_alias" [label = "module.lambda.aws_lambda_alias.qa_alias", shape = "box"]
+		"[root] module.lambda.aws_lambda_function.lambda" [label = "module.lambda.aws_lambda_function.lambda", shape = "box"]
+		"[root] module.lambda.output.arn" [label = "module.lambda.output.arn", shape = "note"]
+		"[root] module.lambda.output.invoke_arn" [label = "module.lambda.output.invoke_arn", shape = "note"]
+		"[root] module.lambda.provider.aws" [label = "module.lambda.provider.aws", shape = "diamond"]
+		"[root] module.lambda.var.environment" [label = "module.lambda.var.environment", shape = "note"]
+		"[root] module.lambda.var.filename" [label = "module.lambda.var.filename", shape = "note"]
+		"[root] module.lambda.var.function_name" [label = "module.lambda.var.function_name", shape = "note"]
+		"[root] module.lambda.var.handler" [label = "module.lambda.var.handler", shape = "note"]
+		"[root] module.lambda.var.layers" [label = "module.lambda.var.layers", shape = "note"]
+		"[root] module.lambda.var.memory_size" [label = "module.lambda.var.memory_size", shape = "note"]
+		"[root] module.lambda.var.profile" [label = "module.lambda.var.profile", shape = "note"]
+		"[root] module.lambda.var.region" [label = "module.lambda.var.region", shape = "note"]
+		"[root] module.lambda.var.role_arn" [label = "module.lambda.var.role_arn", shape = "note"]
+		"[root] module.lambda.var.runtime" [label = "module.lambda.var.runtime", shape = "note"]
+		"[root] module.lambda.var.timeout" [label = "module.lambda.var.timeout", shape = "note"]
+		"[root] module.lambda_cognito.aws_cloudwatch_log_group.log_group" [label = "module.lambda_cognito.aws_cloudwatch_log_group.log_group", shape = "box"]
+		"[root] module.lambda_cognito.aws_lambda_alias.dev_alias" [label = "module.lambda_cognito.aws_lambda_alias.dev_alias", shape = "box"]
+		"[root] module.lambda_cognito.aws_lambda_alias.prod_alias" [label = "module.lambda_cognito.aws_lambda_alias.prod_alias", shape = "box"]
+		"[root] module.lambda_cognito.aws_lambda_alias.qa_alias" [label = "module.lambda_cognito.aws_lambda_alias.qa_alias", shape = "box"]
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" [label = "module.lambda_cognito.aws_lambda_function.lambda", shape = "box"]
+		"[root] module.lambda_cognito.output.arn" [label = "module.lambda_cognito.output.arn", shape = "note"]
+		"[root] module.lambda_cognito.output.invoke_arn" [label = "module.lambda_cognito.output.invoke_arn", shape = "note"]
+		"[root] module.lambda_cognito.provider.aws" [label = "module.lambda_cognito.provider.aws", shape = "diamond"]
+		"[root] module.lambda_cognito.var.environment" [label = "module.lambda_cognito.var.environment", shape = "note"]
+		"[root] module.lambda_cognito.var.filename" [label = "module.lambda_cognito.var.filename", shape = "note"]
+		"[root] module.lambda_cognito.var.function_name" [label = "module.lambda_cognito.var.function_name", shape = "note"]
+		"[root] module.lambda_cognito.var.handler" [label = "module.lambda_cognito.var.handler", shape = "note"]
+		"[root] module.lambda_cognito.var.layers" [label = "module.lambda_cognito.var.layers", shape = "note"]
+		"[root] module.lambda_cognito.var.memory_size" [label = "module.lambda_cognito.var.memory_size", shape = "note"]
+		"[root] module.lambda_cognito.var.profile" [label = "module.lambda_cognito.var.profile", shape = "note"]
+		"[root] module.lambda_cognito.var.region" [label = "module.lambda_cognito.var.region", shape = "note"]
+		"[root] module.lambda_cognito.var.role_arn" [label = "module.lambda_cognito.var.role_arn", shape = "note"]
+		"[root] module.lambda_cognito.var.runtime" [label = "module.lambda_cognito.var.runtime", shape = "note"]
+		"[root] module.lambda_cognito.var.timeout" [label = "module.lambda_cognito.var.timeout", shape = "note"]
+		"[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_notification_lambda_worker" [label = "module.pub_sub.aws_lambda_event_source_mapping.sqs_notification_lambda_worker", shape = "box"]
+		"[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_order_lambda_worker" [label = "module.pub_sub.aws_lambda_event_source_mapping.sqs_order_lambda_worker", shape = "box"]
+		"[root] module.pub_sub.aws_lambda_layer_version.lambda_layer_worker" [label = "module.pub_sub.aws_lambda_layer_version.lambda_layer_worker", shape = "box"]
+		"[root] module.pub_sub.aws_sns_topic.gc_topic_sns" [label = "module.pub_sub.aws_sns_topic.gc_topic_sns", shape = "box"]
+		"[root] module.pub_sub.aws_sns_topic_subscription.notification_subscription" [label = "module.pub_sub.aws_sns_topic_subscription.notification_subscription", shape = "box"]
+		"[root] module.pub_sub.aws_sns_topic_subscription.order_subscription" [label = "module.pub_sub.aws_sns_topic_subscription.order_subscription", shape = "box"]
+		"[root] module.pub_sub.aws_sqs_queue.notification_sns_dlq" [label = "module.pub_sub.aws_sqs_queue.notification_sns_dlq", shape = "box"]
+		"[root] module.pub_sub.aws_sqs_queue.notification_sqs" [label = "module.pub_sub.aws_sqs_queue.notification_sqs", shape = "box"]
+		"[root] module.pub_sub.aws_sqs_queue.order_sqs" [label = "module.pub_sub.aws_sqs_queue.order_sqs", shape = "box"]
+		"[root] module.pub_sub.aws_sqs_queue.order_sqs_dlq" [label = "module.pub_sub.aws_sqs_queue.order_sqs_dlq", shape = "box"]
+		"[root] module.pub_sub.aws_sqs_queue_policy.gc_notification_policy_sqs" [label = "module.pub_sub.aws_sqs_queue_policy.gc_notification_policy_sqs", shape = "box"]
+		"[root] module.pub_sub.aws_sqs_queue_policy.gc_order_policy_queue" [label = "module.pub_sub.aws_sqs_queue_policy.gc_order_policy_queue", shape = "box"]
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_cloudwatch_log_group.log_group" [label = "module.pub_sub.module.lambda_notification_worker.aws_cloudwatch_log_group.log_group", shape = "box"]
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.dev_alias" [label = "module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.dev_alias", shape = "box"]
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.prod_alias" [label = "module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.prod_alias", shape = "box"]
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.qa_alias" [label = "module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.qa_alias", shape = "box"]
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" [label = "module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda", shape = "box"]
+		"[root] module.pub_sub.module.lambda_notification_worker.output.arn" [label = "module.pub_sub.module.lambda_notification_worker.output.arn", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.output.invoke_arn" [label = "module.pub_sub.module.lambda_notification_worker.output.invoke_arn", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.provider.aws" [label = "module.pub_sub.module.lambda_notification_worker.provider.aws", shape = "diamond"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.environment" [label = "module.pub_sub.module.lambda_notification_worker.var.environment", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.filename" [label = "module.pub_sub.module.lambda_notification_worker.var.filename", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.function_name" [label = "module.pub_sub.module.lambda_notification_worker.var.function_name", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.handler" [label = "module.pub_sub.module.lambda_notification_worker.var.handler", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.layers" [label = "module.pub_sub.module.lambda_notification_worker.var.layers", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.memory_size" [label = "module.pub_sub.module.lambda_notification_worker.var.memory_size", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.profile" [label = "module.pub_sub.module.lambda_notification_worker.var.profile", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.region" [label = "module.pub_sub.module.lambda_notification_worker.var.region", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.role_arn" [label = "module.pub_sub.module.lambda_notification_worker.var.role_arn", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.runtime" [label = "module.pub_sub.module.lambda_notification_worker.var.runtime", shape = "note"]
+		"[root] module.pub_sub.module.lambda_notification_worker.var.timeout" [label = "module.pub_sub.module.lambda_notification_worker.var.timeout", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.aws_cloudwatch_log_group.log_group" [label = "module.pub_sub.module.lambda_order_worker.aws_cloudwatch_log_group.log_group", shape = "box"]
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.dev_alias" [label = "module.pub_sub.module.lambda_order_worker.aws_lambda_alias.dev_alias", shape = "box"]
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.prod_alias" [label = "module.pub_sub.module.lambda_order_worker.aws_lambda_alias.prod_alias", shape = "box"]
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.qa_alias" [label = "module.pub_sub.module.lambda_order_worker.aws_lambda_alias.qa_alias", shape = "box"]
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" [label = "module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda", shape = "box"]
+		"[root] module.pub_sub.module.lambda_order_worker.output.arn" [label = "module.pub_sub.module.lambda_order_worker.output.arn", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.output.invoke_arn" [label = "module.pub_sub.module.lambda_order_worker.output.invoke_arn", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.provider.aws" [label = "module.pub_sub.module.lambda_order_worker.provider.aws", shape = "diamond"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.environment" [label = "module.pub_sub.module.lambda_order_worker.var.environment", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.filename" [label = "module.pub_sub.module.lambda_order_worker.var.filename", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.function_name" [label = "module.pub_sub.module.lambda_order_worker.var.function_name", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.handler" [label = "module.pub_sub.module.lambda_order_worker.var.handler", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.layers" [label = "module.pub_sub.module.lambda_order_worker.var.layers", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.memory_size" [label = "module.pub_sub.module.lambda_order_worker.var.memory_size", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.profile" [label = "module.pub_sub.module.lambda_order_worker.var.profile", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.region" [label = "module.pub_sub.module.lambda_order_worker.var.region", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.role_arn" [label = "module.pub_sub.module.lambda_order_worker.var.role_arn", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.runtime" [label = "module.pub_sub.module.lambda_order_worker.var.runtime", shape = "note"]
+		"[root] module.pub_sub.module.lambda_order_worker.var.timeout" [label = "module.pub_sub.module.lambda_order_worker.var.timeout", shape = "note"]
+		"[root] module.pub_sub.provider.aws" [label = "module.pub_sub.provider.aws", shape = "diamond"]
+		"[root] module.pub_sub.var.profile" [label = "module.pub_sub.var.profile", shape = "note"]
+		"[root] module.pub_sub.var.region" [label = "module.pub_sub.var.region", shape = "note"]
+		"[root] module.pub_sub.var.role_arn" [label = "module.pub_sub.var.role_arn", shape = "note"]
+		"[root] module.pub_sub.var.runtime" [label = "module.pub_sub.var.runtime", shape = "note"]
+		"[root] module.ssm.aws_ssm_parameter.admin_aws_profile" [label = "module.ssm.aws_ssm_parameter.admin_aws_profile", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_aws_region" [label = "module.ssm.aws_ssm_parameter.admin_aws_region", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_aws_s3_bucket" [label = "module.ssm.aws_ssm_parameter.admin_aws_s3_bucket", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_bucket" [label = "module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_bucket", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_region" [label = "module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_region", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_indentity_pool_id" [label = "module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_indentity_pool_id", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_region" [label = "module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_region", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_project_region" [label = "module.ssm.aws_ssm_parameter.admin_react_app_aws_project_region", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_id" [label = "module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_id", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_web_client_id" [label = "module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_web_client_id", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_graphql_endpoint_url" [label = "module.ssm.aws_ssm_parameter.admin_react_app_graphql_endpoint_url", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_static_content_base_url" [label = "module.ssm.aws_ssm_parameter.admin_react_app_static_content_base_url", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.cognito_worker_aws_region_cognito" [label = "module.ssm.aws_ssm_parameter.cognito_worker_aws_region_cognito", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_app_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_app_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_bucket_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_bucket_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_category_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_category_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_landing_page_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_landing_page_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_navigation_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_navigation_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_options_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_options_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_page_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_page_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_product_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_product_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_promotion_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_promotion_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_store_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_store_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_tag_key_name" [label = "module.ssm.aws_ssm_parameter.common_aws_s3_tag_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.common_env" [label = "module.ssm.aws_ssm_parameter.common_env", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.notification_worker_transactional_email_source" [label = "module.ssm.aws_ssm_parameter.notification_worker_transactional_email_source", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.order_worker_aws_sns_topic" [label = "module.ssm.aws_ssm_parameter.order_worker_aws_sns_topic", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_apollo_api_key" [label = "module.ssm.aws_ssm_parameter.service_apollo_api_key", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_apollo_key" [label = "module.ssm.aws_ssm_parameter.service_apollo_key", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_cognito_user_pool_id" [label = "module.ssm.aws_ssm_parameter.service_aws_cognito_user_pool_id", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_dynamodb_billing_mode" [label = "module.ssm.aws_ssm_parameter.service_aws_dynamodb_billing_mode", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_function_name" [label = "module.ssm.aws_ssm_parameter.service_aws_lambda_function_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_layer_name" [label = "module.ssm.aws_ssm_parameter.service_aws_lambda_layer_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_worker_layer_name" [label = "module.ssm.aws_ssm_parameter.service_aws_lambda_worker_layer_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_zip_file" [label = "module.ssm.aws_ssm_parameter.service_aws_lambda_zip_file", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_region" [label = "module.ssm.aws_ssm_parameter.service_aws_region", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_s3_account_key_name" [label = "module.ssm.aws_ssm_parameter.service_aws_s3_account_key_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_s3_assets_bucket_name" [label = "module.ssm.aws_ssm_parameter.service_aws_s3_assets_bucket_name", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_s3_public_asset_url" [label = "module.ssm.aws_ssm_parameter.service_aws_s3_public_asset_url", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_aws_sns_topic" [label = "module.ssm.aws_ssm_parameter.service_aws_sns_topic", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_github_api_token" [label = "module.ssm.aws_ssm_parameter.service_github_api_token", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_github_api_url" [label = "module.ssm.aws_ssm_parameter.service_github_api_url", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.service_graphql_server_endpoint" [label = "module.ssm.aws_ssm_parameter.service_graphql_server_endpoint", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.storefront_account_id" [label = "module.ssm.aws_ssm_parameter.storefront_account_id", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.storefront_graphql_endpoint_url" [label = "module.ssm.aws_ssm_parameter.storefront_graphql_endpoint_url", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.storefront_store_id" [label = "module.ssm.aws_ssm_parameter.storefront_store_id", shape = "box"]
+		"[root] module.ssm.aws_ssm_parameter.workers_aws_sqs_order_url" [label = "module.ssm.aws_ssm_parameter.workers_aws_sqs_order_url", shape = "box"]
+		"[root] module.ssm.local.active_env" [label = "module.ssm.local.active_env", shape = "note"]
+		"[root] module.ssm.local.env" [label = "module.ssm.local.env", shape = "note"]
+		"[root] module.ssm.local.workspace" [label = "module.ssm.local.workspace", shape = "note"]
+		"[root] module.ssm.provider.aws" [label = "module.ssm.provider.aws", shape = "diamond"]
+		"[root] module.ssm.var.profile" [label = "module.ssm.var.profile", shape = "note"]
+		"[root] module.ssm.var.region" [label = "module.ssm.var.region", shape = "note"]
+		"[root] provider.aws" [label = "provider.aws", shape = "diamond"]
+		"[root] aws_api_gateway_authorizer.authorizer" -> "[root] module.apigateway.output.id"
+		"[root] aws_api_gateway_authorizer.authorizer" -> "[root] module.cognito.output.arn"
+		"[root] aws_api_gateway_authorizer.authorizer" -> "[root] provider.aws"
+		"[root] aws_api_gateway_deployment.dev_deployment" -> "[root] aws_api_gateway_integration.get_integ"
+		"[root] aws_api_gateway_deployment.dev_deployment" -> "[root] local.dev"
+		"[root] aws_api_gateway_deployment.prod_deployment" -> "[root] aws_api_gateway_integration.get_integ"
+		"[root] aws_api_gateway_deployment.prod_deployment" -> "[root] local.prod"
+		"[root] aws_api_gateway_deployment.qa_deployment" -> "[root] aws_api_gateway_integration.get_integ"
+		"[root] aws_api_gateway_deployment.qa_deployment" -> "[root] local.qa"
+		"[root] aws_api_gateway_integration.get_integ" -> "[root] aws_iam_role.iam_apiw_execution_role"
+		"[root] aws_api_gateway_integration.get_integ" -> "[root] local.lambda_uri"
+		"[root] aws_api_gateway_integration.get_integ" -> "[root] module.apigateway.output.graphql_resouce_id"
+		"[root] aws_api_gateway_integration.get_integ" -> "[root] module.apigateway.output.id"
+		"[root] aws_api_gateway_integration.post_intg" -> "[root] aws_iam_role.iam_apiw_execution_role"
+		"[root] aws_api_gateway_integration.post_intg" -> "[root] local.lambda_uri"
+		"[root] aws_api_gateway_integration.post_intg" -> "[root] module.apigateway.output.graphql_resouce_id"
+		"[root] aws_api_gateway_integration.post_intg" -> "[root] module.apigateway.output.id"
+		"[root] aws_iam_policy.iam_invoke_role" -> "[root] data.aws_iam_policy_document.apiw_invoke_policy"
+		"[root] aws_iam_policy.lambda_iam_policy" -> "[root] data.aws_iam_policy_document.lambda_policy_document"
+		"[root] aws_iam_role.iam_apiw_execution_role" -> "[root] data.aws_iam_policy_document.apiw_assume_role_policy"
+		"[root] aws_iam_role.iam_for_lambda" -> "[root] data.aws_iam_policy_document.lambda_assume_role_policy"
+		"[root] aws_iam_role_policy_attachment.attachment_policy" -> "[root] aws_iam_policy.lambda_iam_policy"
+		"[root] aws_iam_role_policy_attachment.attachment_policy" -> "[root] aws_iam_role.iam_for_lambda"
+		"[root] aws_iam_role_policy_attachment.attachment_role" -> "[root] aws_iam_policy.iam_invoke_role"
+		"[root] aws_iam_role_policy_attachment.attachment_role" -> "[root] aws_iam_role.iam_apiw_execution_role"
+		"[root] aws_lambda_layer_version.lambda_layer" -> "[root] provider.aws"
+		"[root] aws_s3_bucket.static_metadata" -> "[root] provider.aws"
+		"[root] data.aws_iam_policy_document.apiw_assume_role_policy" -> "[root] provider.aws"
+		"[root] data.aws_iam_policy_document.apiw_invoke_policy" -> "[root] provider.aws"
+		"[root] data.aws_iam_policy_document.lambda_assume_role_policy" -> "[root] provider.aws"
+		"[root] data.aws_iam_policy_document.lambda_policy_document" -> "[root] provider.aws"
+		"[root] local.active_env" -> "[root] local.env"
+		"[root] local.lambda_uri" -> "[root] module.lambda.output.arn"
+		"[root] local.workspace" -> "[root] local.active_env"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_api_gateway_deployment.dev_deployment"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_api_gateway_deployment.prod_deployment"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_api_gateway_deployment.qa_deployment"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_api_gateway_integration.post_intg"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_iam_role_policy_attachment.attachment_policy"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_iam_role_policy_attachment.attachment_role"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_s3_bucket.static_metadata"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.apigateway.aws_api_gateway_integration_response._"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.apigateway.aws_api_gateway_method.method_get"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.apigateway.aws_api_gateway_method.method_post"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.apigateway.output.execution_arn"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.apigateway.output.graphql_resouce_parent_id"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.apigateway.output.graphql_resouce_path"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.apigateway.output.root_resource_id"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.cognito.aws_cognito_user_group.role"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.cognito.aws_cognito_user_pool_client.client"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.cognito.output.endpoint"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.cognito.output.id"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.cognito.var.schemas_number"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.lambda.aws_lambda_alias.dev_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.lambda.aws_lambda_alias.prod_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.lambda.aws_lambda_alias.qa_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.lambda.output.invoke_arn"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.lambda_cognito.aws_lambda_alias.dev_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.lambda_cognito.aws_lambda_alias.prod_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.lambda_cognito.aws_lambda_alias.qa_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.lambda_cognito.output.arn"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.lambda_cognito.output.invoke_arn"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_notification_lambda_worker"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_order_lambda_worker"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.aws_sns_topic_subscription.notification_subscription"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.aws_sns_topic_subscription.order_subscription"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.aws_sqs_queue_policy.gc_notification_policy_sqs"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.aws_sqs_queue_policy.gc_order_policy_queue"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.dev_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.prod_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.qa_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.module.lambda_notification_worker.output.invoke_arn"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.dev_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.prod_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.qa_alias"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.pub_sub.module.lambda_order_worker.output.invoke_arn"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_aws_profile"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_aws_region"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_aws_s3_bucket"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_bucket"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_region"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_indentity_pool_id"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_region"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_project_region"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_id"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_web_client_id"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_graphql_endpoint_url"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_static_content_base_url"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.cognito_worker_aws_region_cognito"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_app_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_bucket_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_category_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_landing_page_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_navigation_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_options_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_page_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_product_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_promotion_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_store_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_tag_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.common_env"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.notification_worker_transactional_email_source"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.order_worker_aws_sns_topic"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_apollo_api_key"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_apollo_key"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_cognito_user_pool_id"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_dynamodb_billing_mode"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_lambda_function_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_lambda_layer_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_lambda_worker_layer_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_lambda_zip_file"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_region"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_s3_account_key_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_s3_assets_bucket_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_s3_public_asset_url"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_sns_topic"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_github_api_token"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_github_api_url"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.service_graphql_server_endpoint"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.storefront_account_id"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.storefront_graphql_endpoint_url"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.storefront_store_id"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] module.ssm.aws_ssm_parameter.workers_aws_sqs_order_url"
+		"[root] module.apigateway.aws_api_gateway_integration._" -> "[root] module.apigateway.aws_api_gateway_method._"
+		"[root] module.apigateway.aws_api_gateway_integration_response._" -> "[root] module.apigateway.aws_api_gateway_integration._"
+		"[root] module.apigateway.aws_api_gateway_integration_response._" -> "[root] module.apigateway.aws_api_gateway_method_response._"
+		"[root] module.apigateway.aws_api_gateway_integration_response._" -> "[root] module.apigateway.local.integration_response_parameters"
+		"[root] module.apigateway.aws_api_gateway_method._" -> "[root] module.apigateway.aws_api_gateway_resource.root"
+		"[root] module.apigateway.aws_api_gateway_method.method_get" -> "[root] module.apigateway.aws_api_gateway_resource.root"
+		"[root] module.apigateway.aws_api_gateway_method.method_get" -> "[root] module.apigateway.var.authorization"
+		"[root] module.apigateway.aws_api_gateway_method.method_get" -> "[root] module.apigateway.var.aws_api_gateway_authorizer_id"
+		"[root] module.apigateway.aws_api_gateway_method.method_post" -> "[root] module.apigateway.aws_api_gateway_resource.root"
+		"[root] module.apigateway.aws_api_gateway_method.method_post" -> "[root] module.apigateway.var.authorization"
+		"[root] module.apigateway.aws_api_gateway_method.method_post" -> "[root] module.apigateway.var.aws_api_gateway_authorizer_id"
+		"[root] module.apigateway.aws_api_gateway_method_response._" -> "[root] module.apigateway.aws_api_gateway_method._"
+		"[root] module.apigateway.aws_api_gateway_method_response._" -> "[root] module.apigateway.local.method_response_parameters"
+		"[root] module.apigateway.aws_api_gateway_resource.root" -> "[root] module.apigateway.aws_api_gateway_rest_api.api"
+		"[root] module.apigateway.aws_api_gateway_rest_api.api" -> "[root] module.apigateway.provider.aws"
+		"[root] module.apigateway.aws_api_gateway_rest_api.api" -> "[root] module.apigateway.var.api_name"
+		"[root] module.apigateway.local.header_names" -> "[root] module.apigateway.local.header_values"
+		"[root] module.apigateway.local.header_values" -> "[root] module.apigateway.local.headers"
+		"[root] module.apigateway.local.headers" -> "[root] module.apigateway.var.allow_credentials"
+		"[root] module.apigateway.local.headers" -> "[root] module.apigateway.var.allow_headers"
+		"[root] module.apigateway.local.headers" -> "[root] module.apigateway.var.allow_max_age"
+		"[root] module.apigateway.local.headers" -> "[root] module.apigateway.var.allow_methods"
+		"[root] module.apigateway.local.headers" -> "[root] module.apigateway.var.allow_origin"
+		"[root] module.apigateway.local.integration_response_parameters" -> "[root] module.apigateway.local.parameter_names"
+		"[root] module.apigateway.local.method_response_parameters" -> "[root] module.apigateway.local.true_list"
+		"[root] module.apigateway.local.parameter_names" -> "[root] module.apigateway.local.header_names"
+		"[root] module.apigateway.local.true_list" -> "[root] module.apigateway.local.parameter_names"
+		"[root] module.apigateway.output.execution_arn" -> "[root] module.apigateway.aws_api_gateway_rest_api.api"
+		"[root] module.apigateway.output.graphql_resouce_id" -> "[root] module.apigateway.aws_api_gateway_resource.root"
+		"[root] module.apigateway.output.graphql_resouce_parent_id" -> "[root] module.apigateway.aws_api_gateway_resource.root"
+		"[root] module.apigateway.output.graphql_resouce_path" -> "[root] module.apigateway.aws_api_gateway_resource.root"
+		"[root] module.apigateway.output.id" -> "[root] module.apigateway.aws_api_gateway_rest_api.api"
+		"[root] module.apigateway.output.root_resource_id" -> "[root] module.apigateway.aws_api_gateway_rest_api.api"
+		"[root] module.apigateway.provider.aws (close)" -> "[root] module.apigateway.aws_api_gateway_integration_response._"
+		"[root] module.apigateway.provider.aws (close)" -> "[root] module.apigateway.aws_api_gateway_method.method_get"
+		"[root] module.apigateway.provider.aws (close)" -> "[root] module.apigateway.aws_api_gateway_method.method_post"
+		"[root] module.apigateway.provider.aws" -> "[root] module.apigateway.var.profile"
+		"[root] module.apigateway.provider.aws" -> "[root] module.apigateway.var.region"
+		"[root] module.apigateway.var.api_name" -> "[root] local.workspace"
+		"[root] module.apigateway.var.aws_api_gateway_authorizer_id" -> "[root] aws_api_gateway_authorizer.authorizer"
+		"[root] module.apigateway.var.profile" -> "[root] local.workspace"
+		"[root] module.apigateway.var.region" -> "[root] local.workspace"
+		"[root] module.cognito.aws_cognito_user_group.role" -> "[root] module.cognito.aws_cognito_user_pool.pool"
+		"[root] module.cognito.aws_cognito_user_group.role" -> "[root] module.cognito.var.roles"
+		"[root] module.cognito.aws_cognito_user_pool.pool" -> "[root] module.cognito.provider.aws"
+		"[root] module.cognito.aws_cognito_user_pool.pool" -> "[root] module.cognito.var.cognito_user_pool_name"
+		"[root] module.cognito.aws_cognito_user_pool.pool" -> "[root] module.cognito.var.schemas_string"
+		"[root] module.cognito.aws_cognito_user_pool.pool" -> "[root] module.cognito.var.username_attributes"
+		"[root] module.cognito.aws_cognito_user_pool_client.client" -> "[root] module.cognito.aws_cognito_user_pool.pool"
+		"[root] module.cognito.aws_cognito_user_pool_client.client" -> "[root] module.cognito.local.attributes"
+		"[root] module.cognito.local.attributes" -> "[root] module.cognito.local.default_attributes"
+		"[root] module.cognito.local.attributes" -> "[root] module.cognito.var.custom_attribute_list"
+		"[root] module.cognito.output.arn" -> "[root] module.cognito.aws_cognito_user_pool.pool"
+		"[root] module.cognito.output.endpoint" -> "[root] module.cognito.aws_cognito_user_pool.pool"
+		"[root] module.cognito.output.id" -> "[root] module.cognito.aws_cognito_user_pool.pool"
+		"[root] module.cognito.provider.aws (close)" -> "[root] module.cognito.aws_cognito_user_group.role"
+		"[root] module.cognito.provider.aws (close)" -> "[root] module.cognito.aws_cognito_user_pool_client.client"
+		"[root] module.cognito.provider.aws" -> "[root] module.cognito.var.profile"
+		"[root] module.cognito.provider.aws" -> "[root] module.cognito.var.region"
+		"[root] module.cognito.var.cognito_user_pool_name" -> "[root] local.workspace"
+		"[root] module.cognito.var.profile" -> "[root] local.workspace"
+		"[root] module.lambda.aws_cloudwatch_log_group.log_group" -> "[root] module.lambda.provider.aws"
+		"[root] module.lambda.aws_cloudwatch_log_group.log_group" -> "[root] module.lambda.var.function_name"
+		"[root] module.lambda.aws_lambda_alias.dev_alias" -> "[root] module.lambda.aws_lambda_function.lambda"
+		"[root] module.lambda.aws_lambda_alias.prod_alias" -> "[root] module.lambda.aws_lambda_function.lambda"
+		"[root] module.lambda.aws_lambda_alias.qa_alias" -> "[root] module.lambda.aws_lambda_function.lambda"
+		"[root] module.lambda.aws_lambda_function.lambda" -> "[root] module.lambda.aws_cloudwatch_log_group.log_group"
+		"[root] module.lambda.aws_lambda_function.lambda" -> "[root] module.lambda.var.environment"
+		"[root] module.lambda.aws_lambda_function.lambda" -> "[root] module.lambda.var.filename"
+		"[root] module.lambda.aws_lambda_function.lambda" -> "[root] module.lambda.var.handler"
+		"[root] module.lambda.aws_lambda_function.lambda" -> "[root] module.lambda.var.layers"
+		"[root] module.lambda.aws_lambda_function.lambda" -> "[root] module.lambda.var.memory_size"
+		"[root] module.lambda.aws_lambda_function.lambda" -> "[root] module.lambda.var.role_arn"
+		"[root] module.lambda.aws_lambda_function.lambda" -> "[root] module.lambda.var.runtime"
+		"[root] module.lambda.aws_lambda_function.lambda" -> "[root] module.lambda.var.timeout"
+		"[root] module.lambda.output.arn" -> "[root] module.lambda.aws_lambda_function.lambda"
+		"[root] module.lambda.output.invoke_arn" -> "[root] module.lambda.aws_lambda_function.lambda"
+		"[root] module.lambda.provider.aws (close)" -> "[root] module.lambda.aws_lambda_alias.dev_alias"
+		"[root] module.lambda.provider.aws (close)" -> "[root] module.lambda.aws_lambda_alias.prod_alias"
+		"[root] module.lambda.provider.aws (close)" -> "[root] module.lambda.aws_lambda_alias.qa_alias"
+		"[root] module.lambda.provider.aws" -> "[root] module.lambda.var.profile"
+		"[root] module.lambda.provider.aws" -> "[root] module.lambda.var.region"
+		"[root] module.lambda.var.filename" -> "[root] local.workspace"
+		"[root] module.lambda.var.function_name" -> "[root] local.workspace"
+		"[root] module.lambda.var.handler" -> "[root] local.workspace"
+		"[root] module.lambda.var.layers" -> "[root] aws_lambda_layer_version.lambda_layer"
+		"[root] module.lambda.var.profile" -> "[root] local.workspace"
+		"[root] module.lambda.var.region" -> "[root] local.workspace"
+		"[root] module.lambda.var.role_arn" -> "[root] aws_iam_role.iam_for_lambda"
+		"[root] module.lambda.var.runtime" -> "[root] local.workspace"
+		"[root] module.lambda.var.timeout" -> "[root] local.workspace"
+		"[root] module.lambda_cognito.aws_cloudwatch_log_group.log_group" -> "[root] module.lambda_cognito.provider.aws"
+		"[root] module.lambda_cognito.aws_cloudwatch_log_group.log_group" -> "[root] module.lambda_cognito.var.function_name"
+		"[root] module.lambda_cognito.aws_lambda_alias.dev_alias" -> "[root] module.lambda_cognito.aws_lambda_function.lambda"
+		"[root] module.lambda_cognito.aws_lambda_alias.prod_alias" -> "[root] module.lambda_cognito.aws_lambda_function.lambda"
+		"[root] module.lambda_cognito.aws_lambda_alias.qa_alias" -> "[root] module.lambda_cognito.aws_lambda_function.lambda"
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" -> "[root] module.lambda_cognito.aws_cloudwatch_log_group.log_group"
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" -> "[root] module.lambda_cognito.var.environment"
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" -> "[root] module.lambda_cognito.var.filename"
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" -> "[root] module.lambda_cognito.var.handler"
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" -> "[root] module.lambda_cognito.var.layers"
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" -> "[root] module.lambda_cognito.var.memory_size"
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" -> "[root] module.lambda_cognito.var.role_arn"
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" -> "[root] module.lambda_cognito.var.runtime"
+		"[root] module.lambda_cognito.aws_lambda_function.lambda" -> "[root] module.lambda_cognito.var.timeout"
+		"[root] module.lambda_cognito.output.arn" -> "[root] module.lambda_cognito.aws_lambda_function.lambda"
+		"[root] module.lambda_cognito.output.invoke_arn" -> "[root] module.lambda_cognito.aws_lambda_function.lambda"
+		"[root] module.lambda_cognito.provider.aws (close)" -> "[root] module.lambda_cognito.aws_lambda_alias.dev_alias"
+		"[root] module.lambda_cognito.provider.aws (close)" -> "[root] module.lambda_cognito.aws_lambda_alias.prod_alias"
+		"[root] module.lambda_cognito.provider.aws (close)" -> "[root] module.lambda_cognito.aws_lambda_alias.qa_alias"
+		"[root] module.lambda_cognito.provider.aws" -> "[root] module.lambda_cognito.var.profile"
+		"[root] module.lambda_cognito.provider.aws" -> "[root] module.lambda_cognito.var.region"
+		"[root] module.lambda_cognito.var.filename" -> "[root] local.workspace"
+		"[root] module.lambda_cognito.var.profile" -> "[root] local.workspace"
+		"[root] module.lambda_cognito.var.role_arn" -> "[root] aws_iam_role.iam_for_lambda"
+		"[root] module.lambda_cognito.var.runtime" -> "[root] local.workspace"
+		"[root] module.lambda_cognito.var.timeout" -> "[root] local.workspace"
+		"[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_notification_lambda_worker" -> "[root] module.pub_sub.aws_sqs_queue.notification_sqs"
+		"[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_notification_lambda_worker" -> "[root] module.pub_sub.module.lambda_notification_worker.output.arn"
+		"[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_order_lambda_worker" -> "[root] module.pub_sub.aws_sqs_queue.order_sqs"
+		"[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_order_lambda_worker" -> "[root] module.pub_sub.module.lambda_order_worker.output.arn"
+		"[root] module.pub_sub.aws_lambda_layer_version.lambda_layer_worker" -> "[root] module.pub_sub.provider.aws"
+		"[root] module.pub_sub.aws_lambda_layer_version.lambda_layer_worker" -> "[root] module.pub_sub.var.runtime"
+		"[root] module.pub_sub.aws_sns_topic.gc_topic_sns" -> "[root] module.pub_sub.provider.aws"
+		"[root] module.pub_sub.aws_sns_topic_subscription.notification_subscription" -> "[root] module.pub_sub.aws_sns_topic.gc_topic_sns"
+		"[root] module.pub_sub.aws_sns_topic_subscription.notification_subscription" -> "[root] module.pub_sub.aws_sqs_queue.notification_sqs"
+		"[root] module.pub_sub.aws_sns_topic_subscription.order_subscription" -> "[root] module.pub_sub.aws_sns_topic.gc_topic_sns"
+		"[root] module.pub_sub.aws_sns_topic_subscription.order_subscription" -> "[root] module.pub_sub.aws_sqs_queue.order_sqs"
+		"[root] module.pub_sub.aws_sqs_queue.notification_sns_dlq" -> "[root] module.pub_sub.provider.aws"
+		"[root] module.pub_sub.aws_sqs_queue.notification_sqs" -> "[root] module.pub_sub.aws_sqs_queue.notification_sns_dlq"
+		"[root] module.pub_sub.aws_sqs_queue.order_sqs" -> "[root] module.pub_sub.aws_sqs_queue.order_sqs_dlq"
+		"[root] module.pub_sub.aws_sqs_queue.order_sqs_dlq" -> "[root] module.pub_sub.provider.aws"
+		"[root] module.pub_sub.aws_sqs_queue_policy.gc_notification_policy_sqs" -> "[root] module.pub_sub.aws_sns_topic.gc_topic_sns"
+		"[root] module.pub_sub.aws_sqs_queue_policy.gc_notification_policy_sqs" -> "[root] module.pub_sub.aws_sqs_queue.notification_sqs"
+		"[root] module.pub_sub.aws_sqs_queue_policy.gc_order_policy_queue" -> "[root] module.pub_sub.aws_sns_topic.gc_topic_sns"
+		"[root] module.pub_sub.aws_sqs_queue_policy.gc_order_policy_queue" -> "[root] module.pub_sub.aws_sqs_queue.order_sqs"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_cloudwatch_log_group.log_group" -> "[root] module.pub_sub.module.lambda_notification_worker.provider.aws"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_cloudwatch_log_group.log_group" -> "[root] module.pub_sub.module.lambda_notification_worker.var.function_name"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.dev_alias" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.prod_alias" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.qa_alias" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_cloudwatch_log_group.log_group"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_notification_worker.var.environment"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_notification_worker.var.filename"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_notification_worker.var.handler"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_notification_worker.var.layers"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_notification_worker.var.memory_size"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_notification_worker.var.role_arn"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_notification_worker.var.runtime"
+		"[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_notification_worker.var.timeout"
+		"[root] module.pub_sub.module.lambda_notification_worker.output.arn" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_notification_worker.output.invoke_arn" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_notification_worker.provider.aws (close)" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.dev_alias"
+		"[root] module.pub_sub.module.lambda_notification_worker.provider.aws (close)" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.prod_alias"
+		"[root] module.pub_sub.module.lambda_notification_worker.provider.aws (close)" -> "[root] module.pub_sub.module.lambda_notification_worker.aws_lambda_alias.qa_alias"
+		"[root] module.pub_sub.module.lambda_notification_worker.provider.aws" -> "[root] module.pub_sub.module.lambda_notification_worker.var.profile"
+		"[root] module.pub_sub.module.lambda_notification_worker.provider.aws" -> "[root] module.pub_sub.module.lambda_notification_worker.var.region"
+		"[root] module.pub_sub.module.lambda_notification_worker.provider.aws" -> "[root] module.pub_sub.provider.aws"
+		"[root] module.pub_sub.module.lambda_notification_worker.var.layers" -> "[root] module.pub_sub.aws_lambda_layer_version.lambda_layer_worker"
+		"[root] module.pub_sub.module.lambda_notification_worker.var.profile" -> "[root] module.pub_sub.var.profile"
+		"[root] module.pub_sub.module.lambda_notification_worker.var.region" -> "[root] module.pub_sub.var.region"
+		"[root] module.pub_sub.module.lambda_notification_worker.var.role_arn" -> "[root] module.pub_sub.var.role_arn"
+		"[root] module.pub_sub.module.lambda_notification_worker.var.runtime" -> "[root] module.pub_sub.var.runtime"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_cloudwatch_log_group.log_group" -> "[root] module.pub_sub.module.lambda_order_worker.provider.aws"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_cloudwatch_log_group.log_group" -> "[root] module.pub_sub.module.lambda_order_worker.var.function_name"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.dev_alias" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.prod_alias" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.qa_alias" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_order_worker.aws_cloudwatch_log_group.log_group"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_order_worker.var.environment"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_order_worker.var.filename"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_order_worker.var.handler"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_order_worker.var.layers"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_order_worker.var.memory_size"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_order_worker.var.role_arn"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_order_worker.var.runtime"
+		"[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda" -> "[root] module.pub_sub.module.lambda_order_worker.var.timeout"
+		"[root] module.pub_sub.module.lambda_order_worker.output.arn" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_order_worker.output.invoke_arn" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_function.lambda"
+		"[root] module.pub_sub.module.lambda_order_worker.provider.aws (close)" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.dev_alias"
+		"[root] module.pub_sub.module.lambda_order_worker.provider.aws (close)" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.prod_alias"
+		"[root] module.pub_sub.module.lambda_order_worker.provider.aws (close)" -> "[root] module.pub_sub.module.lambda_order_worker.aws_lambda_alias.qa_alias"
+		"[root] module.pub_sub.module.lambda_order_worker.provider.aws" -> "[root] module.pub_sub.module.lambda_order_worker.var.profile"
+		"[root] module.pub_sub.module.lambda_order_worker.provider.aws" -> "[root] module.pub_sub.module.lambda_order_worker.var.region"
+		"[root] module.pub_sub.module.lambda_order_worker.provider.aws" -> "[root] module.pub_sub.provider.aws"
+		"[root] module.pub_sub.module.lambda_order_worker.var.layers" -> "[root] module.pub_sub.aws_lambda_layer_version.lambda_layer_worker"
+		"[root] module.pub_sub.module.lambda_order_worker.var.profile" -> "[root] module.pub_sub.var.profile"
+		"[root] module.pub_sub.module.lambda_order_worker.var.region" -> "[root] module.pub_sub.var.region"
+		"[root] module.pub_sub.module.lambda_order_worker.var.role_arn" -> "[root] module.pub_sub.var.role_arn"
+		"[root] module.pub_sub.module.lambda_order_worker.var.runtime" -> "[root] module.pub_sub.var.runtime"
+		"[root] module.pub_sub.provider.aws (close)" -> "[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_notification_lambda_worker"
+		"[root] module.pub_sub.provider.aws (close)" -> "[root] module.pub_sub.aws_lambda_event_source_mapping.sqs_order_lambda_worker"
+		"[root] module.pub_sub.provider.aws (close)" -> "[root] module.pub_sub.aws_sns_topic_subscription.notification_subscription"
+		"[root] module.pub_sub.provider.aws (close)" -> "[root] module.pub_sub.aws_sns_topic_subscription.order_subscription"
+		"[root] module.pub_sub.provider.aws (close)" -> "[root] module.pub_sub.aws_sqs_queue_policy.gc_notification_policy_sqs"
+		"[root] module.pub_sub.provider.aws (close)" -> "[root] module.pub_sub.aws_sqs_queue_policy.gc_order_policy_queue"
+		"[root] module.pub_sub.provider.aws" -> "[root] module.pub_sub.var.profile"
+		"[root] module.pub_sub.provider.aws" -> "[root] module.pub_sub.var.region"
+		"[root] module.pub_sub.var.profile" -> "[root] local.workspace"
+		"[root] module.pub_sub.var.region" -> "[root] local.workspace"
+		"[root] module.pub_sub.var.role_arn" -> "[root] aws_iam_role.iam_for_lambda"
+		"[root] module.pub_sub.var.runtime" -> "[root] local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_aws_profile" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_aws_profile" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_aws_region" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_aws_region" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_aws_s3_bucket" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_aws_s3_bucket" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_bucket" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_bucket" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_region" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_region" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_indentity_pool_id" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_indentity_pool_id" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_region" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_region" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_project_region" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_project_region" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_id" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_id" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_web_client_id" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_web_client_id" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_graphql_endpoint_url" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_graphql_endpoint_url" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_static_content_base_url" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.admin_react_app_static_content_base_url" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.cognito_worker_aws_region_cognito" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.cognito_worker_aws_region_cognito" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_app_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_app_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_bucket_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_bucket_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_category_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_category_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_landing_page_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_landing_page_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_navigation_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_navigation_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_options_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_options_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_page_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_page_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_product_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_product_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_promotion_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_promotion_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_store_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_store_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_tag_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_aws_s3_tag_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.common_env" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.common_env" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.notification_worker_transactional_email_source" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.notification_worker_transactional_email_source" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.order_worker_aws_sns_topic" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.order_worker_aws_sns_topic" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_apollo_api_key" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_apollo_api_key" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_apollo_key" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_apollo_key" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_cognito_user_pool_id" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_cognito_user_pool_id" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_dynamodb_billing_mode" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_dynamodb_billing_mode" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_function_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_function_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_layer_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_layer_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_worker_layer_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_worker_layer_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_zip_file" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_lambda_zip_file" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_region" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_region" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_s3_account_key_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_s3_account_key_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_s3_assets_bucket_name" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_s3_assets_bucket_name" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_s3_public_asset_url" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_s3_public_asset_url" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_sns_topic" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_aws_sns_topic" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_github_api_token" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_github_api_token" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_github_api_url" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_github_api_url" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.service_graphql_server_endpoint" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.service_graphql_server_endpoint" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.storefront_account_id" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.storefront_account_id" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.storefront_graphql_endpoint_url" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.storefront_graphql_endpoint_url" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.storefront_store_id" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.storefront_store_id" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.aws_ssm_parameter.workers_aws_sqs_order_url" -> "[root] module.ssm.local.workspace"
+		"[root] module.ssm.aws_ssm_parameter.workers_aws_sqs_order_url" -> "[root] module.ssm.provider.aws"
+		"[root] module.ssm.local.active_env" -> "[root] module.ssm.local.env"
+		"[root] module.ssm.local.workspace" -> "[root] module.ssm.local.active_env"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_aws_profile"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_aws_region"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_aws_s3_bucket"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_bucket"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_assets_region"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_indentity_pool_id"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_cognito_region"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_project_region"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_id"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_aws_user_pool_web_client_id"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_graphql_endpoint_url"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.admin_react_app_static_content_base_url"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.cognito_worker_aws_region_cognito"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_app_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_bucket_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_category_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_landing_page_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_navigation_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_options_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_page_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_product_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_promotion_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_store_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_aws_s3_tag_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.common_env"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.notification_worker_transactional_email_source"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.order_worker_aws_sns_topic"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_apollo_api_key"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_apollo_key"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_cognito_user_pool_id"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_dynamodb_billing_mode"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_lambda_function_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_lambda_layer_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_lambda_worker_layer_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_lambda_zip_file"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_region"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_s3_account_key_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_s3_assets_bucket_name"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_s3_public_asset_url"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_aws_sns_topic"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_github_api_token"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_github_api_url"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.service_graphql_server_endpoint"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.storefront_account_id"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.storefront_graphql_endpoint_url"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.storefront_store_id"
+		"[root] module.ssm.provider.aws (close)" -> "[root] module.ssm.aws_ssm_parameter.workers_aws_sqs_order_url"
+		"[root] module.ssm.provider.aws" -> "[root] module.ssm.var.profile"
+		"[root] module.ssm.provider.aws" -> "[root] module.ssm.var.region"
+		"[root] module.ssm.var.profile" -> "[root] local.workspace"
+		"[root] module.ssm.var.region" -> "[root] local.workspace"
+		"[root] provider.aws (close)" -> "[root] aws_api_gateway_authorizer.authorizer"
+		"[root] provider.aws (close)" -> "[root] aws_api_gateway_deployment.dev_deployment"
+		"[root] provider.aws (close)" -> "[root] aws_api_gateway_deployment.prod_deployment"
+		"[root] provider.aws (close)" -> "[root] aws_api_gateway_deployment.qa_deployment"
+		"[root] provider.aws (close)" -> "[root] aws_api_gateway_integration.post_intg"
+		"[root] provider.aws (close)" -> "[root] aws_iam_role_policy_attachment.attachment_policy"
+		"[root] provider.aws (close)" -> "[root] aws_iam_role_policy_attachment.attachment_role"
+		"[root] provider.aws (close)" -> "[root] aws_s3_bucket.static_metadata"
+		"[root] provider.aws" -> "[root] local.workspace"
+		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
+		"[root] root" -> "[root] module.apigateway.provider.aws (close)"
+		"[root] root" -> "[root] module.cognito.provider.aws (close)"
+		"[root] root" -> "[root] module.lambda.provider.aws (close)"
+		"[root] root" -> "[root] module.lambda_cognito.provider.aws (close)"
+		"[root] root" -> "[root] module.pub_sub.module.lambda_notification_worker.provider.aws (close)"
+		"[root] root" -> "[root] module.pub_sub.module.lambda_order_worker.provider.aws (close)"
+		"[root] root" -> "[root] module.pub_sub.provider.aws (close)"
+		"[root] root" -> "[root] module.ssm.provider.aws (close)"
+		"[root] root" -> "[root] provider.aws (close)"
+	}
+}
+
