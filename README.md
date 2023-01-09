@@ -5,7 +5,7 @@
 
 `/auth0`
 
-I worked on this project for over six months. The goal of this project was to replace the Shopify IPD with Auth0 IPD
+I worked on this project for over six months. The goal of this project was to replace the Shopify IDP with Auth0 IDP
 so we could own the user data. Instead of users login into Shopify, users could log in to our own IDP services, and
 owning the Authentication/Authorization was what we considered as the first step to start building User Profile
 Feature to help with the business retention. I wrote 90% of the `js/src/*.js`. Those are Auth0 Rules; basically, 
